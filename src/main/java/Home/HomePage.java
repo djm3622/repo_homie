@@ -41,7 +41,9 @@ public class HomePage {
             System.out.println("\t-v : to view collections");
             System.out.println("\t-s : to search for a song");
             System.out.println("\t-e : to edit collection");
-            System.out.println("\t-u : to search for a user");
+            System.out.println("\t-su : to search for a user");
+            System.out.println("\t-fu : to follow a user");
+            System.out.println("\t-u : to unfollow a user");
             System.out.println("\t-q : to log out");
             System.out.print("> ");
 
@@ -60,8 +62,14 @@ public class HomePage {
                 case "-e":
                     Collection.chooseCollection(reader, conn, this.userID);
                     break;
+                case "-su":
+                    User.SearchUser(conn, reader, this.username);
+                    break;
+                case "-fu":
+                    User.FollowUser(conn, reader);
+                    break;
                 case "-u":
-                    User.UserMain(conn, reader);
+                    User.UnFollowUser(conn, reader);
                     break;
                 case "-q":
                     System.out.println("Logging out");
