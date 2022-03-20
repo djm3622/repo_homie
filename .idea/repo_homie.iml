@@ -11,7 +11,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../p320_09/jsch-0.1.55.jar!/" />
+          <root url="jar://C:/IntelliJProjects/jsch-0.1.55.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -20,7 +20,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../p320_09/postgresql-42.3.3.jar!/" />
+          <root url="jar://C:/IntelliJProjects/postgresql-42.3.3.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
