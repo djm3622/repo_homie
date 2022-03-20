@@ -141,7 +141,7 @@ public class Collection {
 
         // find and verify song to add
         PreparedStatement stmt = conn.prepareStatement("select s.songid, s.song_name, a.artist_name from " +
-                "p320_09.song as s, p320_09.artist as a where s.artistid = a.artistid and s.song_name = " + input);
+                "p320_09.song as s, p320_09.artist as a where s.artistid = a.artistid and s.song_name = \'" + input +"\';");
         ResultSet rs;
         try {
             rs = stmt.executeQuery();
@@ -149,34 +149,35 @@ public class Collection {
             System.out.println("Song not found");
             return;
         }
+        System.out.println(" ");
+        HelperFucntions.barCaps("enter id of song to add");
         while(rs.next()){
             int songID = rs.getInt("songid");
             String song_name = rs.getString("song_name");
             String artist_name = rs.getString("artist_name");
-            System.out.println("id: " + songID + ", " + song_name + " by " + artist_name);
+            System.out.println("\tid: " + songID + ", " + song_name + " by " + artist_name);
         }
-        HelperFucntions.barCaps("enter id of song to add");
-        System.out.println("> ");
-        int in = Integer.parseInt(reader.readLine());
+        System.out.print("> ");
+        String str = reader.readLine();
+        int in = Integer.parseInt(str);
 
         // find next track_number
         stmt = conn.prepareStatement("SELECT * FROM p320_09.collection_track where collectionid = " +
                 collectionID + " ORDER BY track_number DESC LIMIT 1");
         ResultSet set = stmt.executeQuery();
 
-        int track_number = 0;
+        int track_number = 1;
         if (set.next()) {
             track_number += Integer.parseInt(set.getString("track_number")) + 1;
         }
 
         //insert song
         stmt = conn.prepareStatement("insert into p320_09.collection_track(collectionid, songid, track_number) " +
-                "values (" + collectionID + ", " + in + ", " + track_number);
+                "values (" + collectionID + ", " + in + ", " + track_number + ")");
         try{
             stmt.executeQuery();
+        }catch (PSQLException e){
             System.out.println("Successfully added song");
-        }catch (Exception e){
-            System.out.println("Unable to add song");
         }
     }
 
