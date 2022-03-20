@@ -44,7 +44,7 @@ public class Collection {
             ResultSet set = stmt.executeQuery();
             while(set.next()){
                 String collectionName = set.getString("name");
-                System.out.println("\t- " + collectionName);
+                System.out.println("\t: " + collectionName);
             }
         }
         else{
@@ -65,31 +65,30 @@ public class Collection {
 
     public static void chooseCollection(BufferedReader reader, Connection conn, int userID) throws SQLException,
             IOException {
-        viewCollections(conn, userID, true);
         // call viewCollection with special flag for only names
         HelperFucntions.barCaps("choose a collection to edit");
-        System.out.print("> ");
-        String input = reader.readLine();
+        viewCollections(conn, userID, true);
 
-        PreparedStatement stmt = conn.prepareStatement("select collectionid, name from p320_09.collection where " +
-                "userid=" + userID);
-        ResultSet set = stmt.executeQuery();
-
-        boolean found = false;
         label:
-        while(set.next()){
-            int collectionID = set.getInt("collectionid");
-            String name = set.getString("name");
-            System.out.println("name: " + name);
-            if(name.equals(input)){
-                //System.out.println("callling editCollection");
-                found = true;
-                editCollection(reader, conn, collectionID);
-                break label;
+        while (true) {
+            System.out.print("> ");
+            String input = reader.readLine();
+
+            PreparedStatement stmt = conn.prepareStatement("select collectionid, name from p320_09.collection where " +
+                    "userid=" + userID);
+            ResultSet set = stmt.executeQuery();
+
+
+            while (set.next()) {
+                int collectionID = set.getInt("collectionid");
+                String name = set.getString("name");
+                if (name.equals(input)) {
+                    editCollection(reader, conn, collectionID);
+                    break label;
+                }
             }
-        }
-        if(!found){
-            System.out.println("Collection Does Not Exist");
+
+            System.out.println("\tCollection does not exist.");
         }
     }
 
@@ -136,13 +135,12 @@ public class Collection {
         System.out.print("> ");
         String input = reader.readLine();
 
-        PreparedStatement stmt = conn.prepareStatement("update p320_09.collection c set (name)=" + input +
-                "where collectionid = " + collectionID);
+        PreparedStatement stmt = conn.prepareStatement("UPDATE p320_09.collection SET name = '" + input +
+                "' WHERE collectionid = '" + collectionID + "'");
         try{
-            ResultSet set = stmt.executeQuery();
-        }catch(Exception e){
-            System.out.println("Uh-Oh! There was a problem updating collection name.");
-            e.printStackTrace();
+            stmt.executeQuery();
+        }catch(PSQLException e){
+            System.out.println("\tName updated.");
         }
     }
 }
