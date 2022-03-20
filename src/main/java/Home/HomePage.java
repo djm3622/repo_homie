@@ -2,6 +2,7 @@ package Home;
 
 import Collection.Collection;
 import SongSearch.SongSearch;
+import UserFollow.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -58,6 +59,7 @@ public class HomePage {
                 case "-e":
                     break;
                 case "-u":
+                    User.UserMain(conn, reader);
                     break;
                 case "-q":
                     System.out.println("Logging out");

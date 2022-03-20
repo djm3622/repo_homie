@@ -1,4 +1,4 @@
-/**package SongSearch;
+package SongSearch;
 
 import java.sql.*;
 import java.text.DateFormat;
@@ -19,7 +19,7 @@ public class Song {
 
     /**
      * Create a song
-
+     */
     public Song(@JsonProperty("songID") int songID, @JsonProperty("artistID") int artistID, @JsonProperty("song_name")
             String song_name, @JsonProperty("release_date") Date release_date, @JsonProperty("length") int length,
                 @JsonProperty("genreID") int genreID){
@@ -45,4 +45,4 @@ public class Song {
 //    public String toString(){
 //        return String.format(STRING_FORMAT,songID,artistID, song_name,release_date,length,genreID);
 //    }
-}*/
+}
