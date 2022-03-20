@@ -68,13 +68,13 @@ public class HomePage {
                     Played.entry(conn, reader);
                     break;
                 case "-su":
-                    User.SearchUser(conn, reader, this.username);
+                    User.SearchUser(conn, reader);
                     break;
                 case "-fu":
-                    User.FollowUser(conn, reader);
+                    User.FollowUser(conn, reader, this.userID);
                     break;
                 case "-u":
-                    User.UnFollowUser(conn, reader);
+                    User.UnFollowUser(conn, reader, this.userID);
                     break;
                 case "-q":
                     System.out.println("Logging out");
