@@ -130,14 +130,25 @@ public class HelperFucntions {
         return " ";
     }
 
-    public static void printStuff(ResultSet rs) throws SQLException {
-        while (rs.next()) {
+    public static boolean printStuff(ResultSet rs) throws SQLException {
+        if (rs.next()) {
             String sn = rs.getString("song_name");
             String an = rs.getString("artist_name");
             String l = rs.getString("length");
             String ab = rs.getString("title");
             System.out.println("\t-(" + sn + ") by (" + an + ") on (" + ab + ") : (" + l + ")mins");
+            while (rs.next()) {
+                sn = rs.getString("song_name");
+                an = rs.getString("artist_name");
+                l = rs.getString("length");
+                ab = rs.getString("title");
+                System.out.println("\t-(" + sn + ") by (" + an + ") on (" + ab + ") : (" + l + ")mins");
+            }
+        } else {
+            System.out.println("\tNo songs found.");
+            return false;
         }
+        return true;
     }
 }
 

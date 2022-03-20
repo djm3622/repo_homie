@@ -35,7 +35,7 @@ public class Played {
     }
 
     public static void playSong(Connection conn, BufferedReader reader) {
-
+        
     }
 
     public static void playCollection(Connection conn, BufferedReader reader, int userid) {
