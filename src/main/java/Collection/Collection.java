@@ -67,7 +67,7 @@ public class Collection {
             IOException {
         viewCollections(conn, userID, true);
         // call viewCollection with special flag for only names
-        System.out.println("choose a collection to edit");
+        HelperFucntions.barCaps("choose a collection to edit");
         System.out.print("> ");
         String input = reader.readLine();
 
@@ -75,48 +75,74 @@ public class Collection {
                 "userid=" + userID);
         ResultSet set = stmt.executeQuery();
 
+        boolean found = false;
         label:
-        if(set.next()){
+        while(set.next()){
             int collectionID = set.getInt("collectionid");
             String name = set.getString("name");
+            System.out.println("name: " + name);
             if(name.equals(input)){
-                System.out.println("callling editCollection");
-                //editCollection(reader, conn, collectionID);
+                //System.out.println("callling editCollection");
+                found = true;
+                editCollection(reader, conn, collectionID);
                 break label;
             }
         }
+        if(!found){
+            System.out.println("Collection Does Not Exist");
+        }
     }
 
-    public static void editCollection(BufferedReader reader, Connection conn, int collectionID) throws IOException {
+    public static void editCollection(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
         String input;
         label:
         while (true) {
             System.out.println("");
             System.out.println("Commands as Follows:");
-            System.out.println("\t-c : to add song");
-            System.out.println("\t-v : to delete song");
-            System.out.println("\t-s : to add album");
-            System.out.println("\t-e : to delete album");
-            System.out.println("\t-u : to modify name");
-            System.out.println("\t-q : to delete collection");
+            System.out.println("\t-as : to add song");
+            System.out.println("\t-ds : to delete song");
+            System.out.println("\t-aa : to add album");
+            System.out.println("\t-da : to delete album");
+            System.out.println("\t-m  : to modify name");
+            System.out.println("\t-d  : to delete collection");
+            System.out.println("\t-c  : to change collection");
+            System.out.println("\t-q  : to go back to home");
             System.out.print("> ");
 
             input = reader.readLine();
 
             switch (input) {
-                case "-c":
+                case "-as":
                     break;
-                case "-v":
+                case "-ds":
                     break;
-                case "-s":
+                case "-aa":
                     break;
-                case "-e":
+                case "-da":
                     break;
-                case "-u":
+                case "-m":
+                    changeCollectionName(reader, conn, collectionID);
+                    break;
+                case "-d":
                     break;
                 case "-q":
                     break label;
             }
+        }
+    }
+
+    public static void changeCollectionName(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
+        HelperFucntions.barCaps("change name below");
+        System.out.print("> ");
+        String input = reader.readLine();
+
+        PreparedStatement stmt = conn.prepareStatement("update p320_09.collection c set (name)=" + input +
+                "where collectionid = " + collectionID);
+        try{
+            ResultSet set = stmt.executeQuery();
+        }catch(Exception e){
+            System.out.println("Uh-Oh! There was a problem updating collection name.");
+            e.printStackTrace();
         }
     }
 }
