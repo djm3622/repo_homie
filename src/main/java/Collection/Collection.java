@@ -105,17 +105,20 @@ public class Collection {
             System.out.println("\t-m  : to modify name");
             System.out.println("\t-d  : to delete collection");
             System.out.println("\t-c  : to change collection");
-            System.out.println("\t-q  : to go back to home");
+            System.out.println("\t-q  : to return to home");
             System.out.print("> ");
 
             input = reader.readLine();
 
             switch (input) {
                 case "-as":
+                    addSong(reader, conn, collectionID);
                     break;
                 case "-ds":
+                    deleteSong(reader, conn, collectionID);
                     break;
                 case "-aa":
+                    addAlbum(reader, conn, collectionID);
                     break;
                 case "-da":
                     break;
@@ -124,10 +127,145 @@ public class Collection {
                     break;
                 case "-d":
                     break;
+                case "-c":
+                    break;
                 case "-q":
                     break label;
             }
         }
+    }
+
+    public static void addSong(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
+        HelperFucntions.barCaps("song name you want to add");
+        System.out.print("> ");
+        String input = reader.readLine();
+
+        // find and verify song to add
+        PreparedStatement stmt = conn.prepareStatement("select s.songid, s.song_name, a.artist_name from " +
+                "p320_09.song as s, p320_09.artist as a where s.artistid = a.artistid and s.song_name = \'" + input +"\';");
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery();
+        }catch(Exception e){
+            System.out.println("Song not found");
+            return;
+        }
+        System.out.println(" ");
+        HelperFucntions.barCaps("enter id of song to add");
+        while(rs.next()){
+            int songID = rs.getInt("songid");
+            String song_name = rs.getString("song_name");
+            String artist_name = rs.getString("artist_name");
+            System.out.println("\tid: " + songID + ", " + song_name + " by " + artist_name);
+        }
+        System.out.print("> ");
+        String str = reader.readLine();
+        int in = Integer.parseInt(str);
+
+        // find next track_number
+        int track_number = getTrackNumber(conn, collectionID);
+
+        //insert song
+        stmt = conn.prepareStatement("insert into p320_09.collection_track(collectionid, songid, track_number) " +
+                "values (" + collectionID + ", " + in + ", " + track_number + ")");
+        try{
+            stmt.executeQuery();
+        }catch (PSQLException e){
+            System.out.println("Successfully added song");
+        }
+    }
+
+    public static void deleteSong(BufferedReader reader, Connection conn, int collectionID) throws SQLException, IOException {
+        HelperFucntions.barCaps("song name you want to delete");
+        System.out.print("> ");
+        String input = reader.readLine();
+
+        // find and verify song to add
+        PreparedStatement stmt = conn.prepareStatement("select s.song_name, ct.songid, ct.track_number, a.artist_name " +
+                "from p320_09.collection_track as ct, p320_09.song as s, p320_09.artist as a where s.song_name = \'"
+                + input + "\' and ct.songid = s.songid and s.artistid = a.artistid and collectionid = " + collectionID);
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery();
+        }catch(Exception e){
+            System.out.println("Song not found");
+            return;
+        }
+        System.out.println(" ");
+        HelperFucntions.barCaps("enter track number of song to delete");
+        while(rs.next()){
+            int track_number = rs.getInt("track_number");
+            String song_name = rs.getString("song_name");
+            String artist_name = rs.getString("artist_name");
+            System.out.println("\ttrack: " + track_number + ", " + song_name + " by " + artist_name);
+        }
+        System.out.print("> ");
+        String str = reader.readLine();
+        int in = Integer.parseInt(str);
+
+        // delete song
+        stmt = conn.prepareStatement("delete from p320_09.collection_track where collectionid = " + collectionID +
+                " and track_number = " + in);
+        try{
+            stmt.executeQuery();
+        }catch (PSQLException e){
+            System.out.println("Successfully deleted song");
+        }
+
+        // update track_numbers
+        stmt = conn.prepareStatement("update p320_09.collection_track set track_number = (track_number - 1) " +
+                "where track_number > " + in);
+        try{
+            stmt.executeQuery();
+        }catch (PSQLException ignored){
+        }
+    }
+
+    public static void addAlbum(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
+        HelperFucntions.barCaps("album name you want to add");
+        System.out.print("> ");
+        String album = reader.readLine();
+
+        PreparedStatement stmt = conn.prepareStatement("select a.albumid, a.title, a.artistid, ar.artist_name " +
+                "from p320_09.album as a, p320_09.artist as ar where ar.artistid = a.artistid and " +
+                "a.title = \'" + album + "\'");
+        ResultSet rs = stmt.executeQuery();
+
+        System.out.println(" ");
+        HelperFucntions.barCaps("enter album id of album to add");
+        int albumID;
+        while(rs.next()){
+            albumID = rs.getInt("albumid");
+            String album_name = rs.getString("title");
+            String artist_name = rs.getString("artist_name");
+            System.out.println("\tID: " + albumID + ", " + album_name + " by " + artist_name);
+        }
+        System.out.print("> ");
+        album = reader.readLine();
+        albumID = Integer.parseInt(album);
+
+        // find track_number
+        int track_number = getTrackNumber(conn, collectionID);
+
+        // select and add all songs in album
+        stmt = conn.prepareStatement("select songid from p320_09.album_track where albumid = " + albumID);
+        ResultSet set = stmt.executeQuery();
+        while(set.next()){
+            int songID = set.getInt("songid");
+            PreparedStatement mt = conn.prepareStatement("insert into p320_09.collection_track(collectionid, " +
+                    "songid, track_number) values (" + collectionID + ", " + songID + ", " + track_number + ")");
+            track_number++;
+            try{
+                mt.executeQuery();
+            }catch (PSQLException ignored){
+            }
+        }
+        System.out.println("Successfully added album");
+
+    }
+
+    public static void deleteAlbum(){
+
     }
 
     public static void changeCollectionName(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
@@ -142,5 +280,21 @@ public class Collection {
         }catch(PSQLException e){
             System.out.println("\tName updated.");
         }
+    }
+
+    public static void deleteCollection(){
+
+    }
+
+    public static int getTrackNumber(Connection conn, int collectionID) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM p320_09.collection_track where collectionid = " +
+                collectionID + " ORDER BY track_number DESC LIMIT 1");
+        ResultSet set = stmt.executeQuery();
+
+        int track_number = 1;
+        if (set.next()) {
+            track_number = Integer.parseInt(set.getString("track_number")) + 1;
+        }
+        return track_number;
     }
 }
