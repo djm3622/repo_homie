@@ -65,7 +65,7 @@ public class HomePage {
                     SongSearch.entry(conn);
                     break;
                 case "-p":
-                    Played.entry(conn, reader);
+                    Played.entry(conn, reader, this.userID);
                     break;
                 case "-su":
                     User.SearchUser(conn, reader);
