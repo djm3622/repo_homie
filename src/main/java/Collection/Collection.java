@@ -97,7 +97,7 @@ public class Collection {
         label:
         while (true) {
             System.out.println("");
-            System.out.println("Commands as Follows:");
+            System.out.println("Collection Commands as Follows:");
             System.out.println("\t-as : to add song");
             System.out.println("\t-ds : to delete song");
             System.out.println("\t-aa : to add album");

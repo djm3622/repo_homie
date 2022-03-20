@@ -1,6 +1,7 @@
 package Home;
 
 import Collection.Collection;
+import Listening.Played;
 import SongSearch.SongSearch;
 import UserFollow.User;
 
@@ -42,6 +43,7 @@ public class HomePage {
             System.out.println("\t-s : to search for a song");
             System.out.println("\t-e : to edit collection");
             System.out.println("\t-u : to search for a user");
+            System.out.println("\t-p : play song(s)");
             System.out.println("\t-q : to log out");
             System.out.print("> ");
 
@@ -62,6 +64,9 @@ public class HomePage {
                     break;
                 case "-u":
                     User.UserMain(conn, reader);
+                    break;
+                case "-p":
+                    Played.entry(conn, reader);
                     break;
                 case "-q":
                     System.out.println("Logging out");
