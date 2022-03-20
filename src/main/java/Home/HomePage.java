@@ -45,6 +45,8 @@ public class HomePage {
             System.out.println("\t-p  : play song(s)");
             System.out.println("\t-su : to search for a user");
             System.out.println("\t-fu : to follow a user");
+            System.out.println("\t-uf : to unfollow a user");
+            System.out.println("\t-q : to log out");
             System.out.println("\t-u  : to unfollow a user");
             System.out.println("\t-q  : to log out");
             System.out.print("> ");
@@ -71,10 +73,10 @@ public class HomePage {
                     User.SearchUser(conn, reader);
                     break;
                 case "-fu":
-                    //User.FollowUser(conn, reader, this.userID);
+                    User.FollowUser(conn, reader, this.userID);
                     break;
-                case "-u":
-                    //User.UnFollowUser(conn, reader, this.userID);
+                case "-uf":
+                    User.UnFollowUser(conn, reader, this.userID);
                     break;
                 case "-q":
                     System.out.println("Logging out");
