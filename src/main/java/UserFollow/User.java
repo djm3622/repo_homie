@@ -72,7 +72,7 @@ public class User {
      *          - user requests follow and already following
      * @param conn
      * @param reader
-     */
+
     public static void FollowUser(Connection conn, BufferedReader reader, int currID
     ) throws SQLException, IOException {
 
@@ -131,7 +131,7 @@ public class User {
                     System.out.print(f + ", ");
             }
         }
-    }
+    }*/
 
     /**
      *      display current list of following too
@@ -141,7 +141,7 @@ public class User {
      *      usr requests unfollow valid, removed as follower.
      * @param conn
      * @param reader
-     */
+
     public static void UnFollowUser(Connection conn, BufferedReader reader, int currID)
             throws SQLException, IOException {
         PreparedStatement stmt1 = conn.prepareStatement("SELECT ? FROM p320_09.follow");
@@ -199,7 +199,7 @@ public class User {
                     System.out.print(f + ", ");
             }
         }
-    }
+    }*/
 
 
 }

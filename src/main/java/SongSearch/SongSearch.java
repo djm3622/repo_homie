@@ -56,16 +56,39 @@ public class SongSearch {
         System.out.print("Song Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, a.artist_name " +
-                "FROM p320_09.song AS s, p320_09.artist AS a " +
-                "WHERE s.artistID = a.artistID AND s.song_name LIKE '%" + input + "%'" +
-                "ORDER BY s.song_name ASC, a.artist_name ASC");
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
+                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+                "WHERE s.artistID = ar.artistID " +
+                "AND g.genreid = s.genreid " +
+                "AND ar.artistID = a.artistID " +
+                "AND at.songID = s.songID " +
+                "AND at.albumID = a.albumID " +
+                "AND s.song_name LIKE '%" + input + "%'" +
+                "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        while (rs.next()) {
-            String sn = rs.getString("song_name");
-            String an = rs.getString("artist_name");
+        HelperFucntions.printStuff(rs);
 
-            System.out.println("\t-(" + sn + ") by (" + an + ")");
+        String s;
+
+        while (true) {
+            int by = HelperFucntions.sortByStats(reader);
+            s = HelperFucntions.unpackStats(by);
+
+            if (s.equals(" ")) {
+                break;
+            }
+
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
+                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+                    "WHERE s.artistID = ar.artistID " +
+                    "AND g.genreid = s.genreid " +
+                    "AND ar.artistID = a.artistID " +
+                    "AND at.songID = s.songID " +
+                    "AND at.albumID = a.albumID " +
+                    "AND s.song_name LIKE '%" + input + "%'" +s);
+            rs = stmt.executeQuery();
+
+            HelperFucntions.printStuff(rs);
         }
     }
 
@@ -76,19 +99,43 @@ public class SongSearch {
         System.out.print("Artist Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, a.artist_name " +
-                "FROM p320_09.song AS s, p320_09.artist AS a " +
-                "WHERE s.artistID = a.artistID AND a.artist_name LIKE '%" + input + "%'" +
-                "ORDER BY s.song_name ASC, a.artist_name ASC");
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
+                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+                "WHERE s.artistID = ar.artistID " +
+                "AND g.genreid = s.genreid " +
+                "AND ar.artistID = a.artistID " +
+                "AND at.songID = s.songID " +
+                "AND at.albumID = a.albumID " +
+                "AND ar.artist_name LIKE '%" + input + "%'" +
+                "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        while (rs.next()) {
-            String sn = rs.getString("song_name");
-            String an = rs.getString("artist_name");
+        HelperFucntions.printStuff(rs);
 
-            System.out.println("\t-(" + sn + ") by (" + an + ")");
+        String s;
+
+        while (true) {
+            int by = HelperFucntions.sortByStats(reader);
+            s = HelperFucntions.unpackStats(by);
+
+            if (s.equals(" ")) {
+                break;
+            }
+
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
+                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+                    "WHERE s.artistID = ar.artistID " +
+                    "AND g.genreid = s.genreid " +
+                    "AND ar.artistID = a.artistID " +
+                    "AND at.songID = s.songID " +
+                    "AND at.albumID = a.albumID " +
+                    "AND ar.artist_name LIKE '%" + input + "%'" + s);
+            rs = stmt.executeQuery();
+
+            HelperFucntions.printStuff(rs);
         }
-
     }
+
+
 
     public static void byAlbum(Connection conn, BufferedReader reader) throws IOException, SQLException {
         PreparedStatement stmt;
@@ -97,22 +144,40 @@ public class SongSearch {
         System.out.print("Album Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name " +
-                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.album AS a, p320_09.album_track AS at " +
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
+                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
                 "WHERE s.artistID = ar.artistID " +
+                "AND g.genreid = s.genreid " +
                 "AND ar.artistID = a.artistID " +
                 "AND at.songID = s.songID " +
                 "AND at.albumID = a.albumID " +
                 "AND a.title LIKE '%" + input + "%'"+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        while (rs.next()) {
-            String sn = rs.getString("song_name");
-            String an = rs.getString("artist_name");
+        HelperFucntions.printStuff(rs);
 
-            System.out.println("\t-(" + sn + ") by (" + an + ")");
+        String s;
+
+        while (true) {
+            int by = HelperFucntions.sortByStats(reader);
+            s = HelperFucntions.unpackStats(by);
+
+            if (s.equals(" ")) {
+                break;
+            }
+
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
+                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+                    "WHERE s.artistID = ar.artistID " +
+                    "AND g.genreid = s.genreid " +
+                    "AND ar.artistID = a.artistID " +
+                    "AND at.songID = s.songID " +
+                    "AND at.albumID = a.albumID " +
+                    "AND a.title LIKE '%" + input + "%'" + s);
+            rs = stmt.executeQuery();
+
+            HelperFucntions.printStuff(rs);
         }
-
     }
 
     public static void byGenre(Connection conn, BufferedReader reader) throws IOException, SQLException {
@@ -122,23 +187,39 @@ public class SongSearch {
         System.out.print("Genre Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, a.artist_name " +
-                "FROM p320_09.song AS s, p320_09.artist AS a, p320_09.genre AS g " +
-                "WHERE s.artistID = a.artistID " +
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
+                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+                "WHERE s.artistID = ar.artistID " +
                 "AND g.genreid = s.genreid " +
+                "AND ar.artistID = a.artistID " +
+                "AND at.songID = s.songID " +
+                "AND at.albumID = a.albumID " +
                 "AND g.genre_name LIKE '%" + input + "%'"+
-                "ORDER BY s.song_name ASC, a.artist_name ASC");
+                "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        while (rs.next()) {
-            String sn = rs.getString("song_name");
-            String an = rs.getString("artist_name");
+        HelperFucntions.printStuff(rs);
 
-            System.out.println("\t-(" + sn + ") by (" + an + ")");
-        }
+        String s;
 
-        int by = -1;
-        while (by != 0) {
-            by = HelperFucntions.sortByStats(reader);
+        while (true) {
+            int by = HelperFucntions.sortByStats(reader);
+            s = HelperFucntions.unpackStats(by);
+
+            if (s.equals(" ")) {
+                break;
+            }
+
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
+                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g, p320_09.album AS a, p320_09.album_track AS at " +
+                    "WHERE s.artistID = ar.artistID " +
+                    "AND g.genreid = s.genreid " +
+                    "AND ar.artistID = a.artistID " +
+                    "AND at.songID = s.songID " +
+                    "AND at.albumID = a.albumID " +
+                    "AND g.genre_name LIKE '%" + input + "%'"+s);
+            rs = stmt.executeQuery();
+
+            HelperFucntions.printStuff(rs);
         }
     }
 }
