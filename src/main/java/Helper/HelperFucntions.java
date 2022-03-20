@@ -1,5 +1,10 @@
 package Helper;
 
+import LoginReg.Login;
+import LoginReg.Reg;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class HelperFucntions {
@@ -23,4 +28,63 @@ public class HelperFucntions {
             return false;
         return pat.matcher(email).matches();
     }
+
+    // even return means ASC, odd means DESC
+    // if even divide it by 2, odd leave it
+    // 1 means by name
+    // 3 means by artist
+    // 5 means by genre
+    // 7 means by release year
+    public static int sortByStats(BufferedReader reader) throws IOException {
+
+        int by = 0;
+        String input;
+
+        label:
+        while(true) {
+            System.out.println("Sort By:");
+            System.out.println("\t-nm : by name");
+            System.out.println("\t-an : by artist");
+            System.out.println("\t-gr : by genre");
+            System.out.println("\t-ry : by release year");
+            System.out.println("\t-q : to quit");
+            System.out.print("> ");
+
+            input = reader.readLine();
+
+            switch (input) {
+                case "-nm":
+                    by = 1;
+                    break label;
+                case "-an":
+                    by = 3;
+                    break label;
+                case "-gr":
+                    by = 5;
+                    break label;
+                case "-ry":
+                    by = 7;
+                    break label;
+                case "-q":
+                    return by;
+            }
+        }
+
+        label:
+        while (true) {
+            System.out.print("ASC or DESC: ");
+
+            input = reader.readLine();
+
+            switch (input.toUpperCase()) {
+                case "ASC":
+                    by = by * 2;
+                    break label;
+                case "DESC":
+                    break label;
+            }
+        }
+    return by;
+    }
 }
+
