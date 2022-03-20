@@ -40,12 +40,12 @@ public class HomePage {
             System.out.println("Home Commands as Follows:");
             System.out.println("\t-c : to create collection");
             System.out.println("\t-v : to view collections");
-            System.out.println("\t-s : to search for a song");
             System.out.println("\t-e : to edit collection");
+            System.out.println("\t-s : to search for a song");
+            System.out.println("\t-p : play song(s)");
             System.out.println("\t-su : to search for a user");
             System.out.println("\t-fu : to follow a user");
             System.out.println("\t-u : to unfollow a user");
-            System.out.println("\t-p : play song(s)");
             System.out.println("\t-q : to log out");
             System.out.print("> ");
 
@@ -58,11 +58,14 @@ public class HomePage {
                 case "-v":
                     Collection.viewCollections(conn, this.userID, false);
                     break;
+                case "-e":
+                    Collection.chooseCollection(reader, conn, this.userID);
+                    break;
                 case "-s":
                     SongSearch.entry(conn);
                     break;
-                case "-e":
-                    Collection.chooseCollection(reader, conn, this.userID);
+                case "-p":
+                    Played.entry(conn, reader);
                     break;
                 case "-su":
                     User.SearchUser(conn, reader, this.username);
@@ -72,9 +75,6 @@ public class HomePage {
                     break;
                 case "-u":
                     User.UnFollowUser(conn, reader);
-                    break;
-                case "-p":
-                    Played.entry(conn, reader);
                     break;
                 case "-q":
                     System.out.println("Logging out");
