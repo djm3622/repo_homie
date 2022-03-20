@@ -126,6 +126,7 @@ public class Collection {
                     changeCollectionName(reader, conn, collectionID);
                     break;
                 case "-d":
+                    deleteCollection(reader, conn, collectionID);
                     break;
                 case "-c":
                     break;
@@ -282,8 +283,27 @@ public class Collection {
         }
     }
 
-    public static void deleteCollection(){
+    public static void deleteCollection(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
+        HelperFucntions.barCaps("are you sure you want to delete this collection? (y/n)");
+        String input = reader.readLine();
+        if(input.toLowerCase().equals("y") || input.toLowerCase().equals("yes")) {
+            PreparedStatement stmt = conn.prepareStatement("delete from p320_09.collection_track where " +
+                    "collectionid = " + collectionID );
+            try{
+                stmt.executeQuery();
+            }catch(PSQLException ignored){
 
+            }
+            stmt = conn.prepareStatement("delete from p320_09.collection where collectionid = " + collectionID);
+            try{
+                stmt.executeQuery();
+            }catch(PSQLException ignored){
+            }
+            System.out.println("Successfully deleted collection");
+        }
+        else{
+            System.out.println("Returning to collection edit options");
+        }
     }
 
     public static int getTrackNumber(Connection conn, int collectionID) throws SQLException {
