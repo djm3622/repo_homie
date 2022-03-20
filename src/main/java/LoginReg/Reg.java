@@ -36,7 +36,7 @@ public class Reg {
                     break;
                 }
 
-                System.out.print("You sure. That name kinda sucks. (Y/N): ");
+                System.out.print("You sure? That name kinda sucks. (Y/N): ");
                 input = reader.readLine();
                 input = input.toLowerCase();
 
@@ -54,7 +54,7 @@ public class Reg {
             while (true) {
                 System.out.print("email: ");
                 email = reader.readLine();
-                if (isValid(email))
+                if (HelperFucntions.isValidEmail(email))
                     break;
                 else
                     System.out.println("\tInvalid email.");
@@ -113,18 +113,5 @@ public class Reg {
         } catch (PSQLException e) {
             System.out.println("\tRegistered.");
         }
-    }
-
-    public static boolean isValid(String email)
-    {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-                "A-Z]{2,7}$";
-
-        Pattern pat = Pattern.compile(emailRegex);
-        if (email == null)
-            return false;
-        return pat.matcher(email).matches();
     }
 }
