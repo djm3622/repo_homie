@@ -38,15 +38,15 @@ public class HomePage {
         while (true) {
             System.out.println("");
             System.out.println("Home Commands as Follows:");
-            System.out.println("\t-c : to create collection");
-            System.out.println("\t-v : to view collections");
-            System.out.println("\t-e : to edit collection");
-            System.out.println("\t-s : to search for a song");
-            System.out.println("\t-p : play song(s)");
+            System.out.println("\t-c  : to create collection");
+            System.out.println("\t-v  : to view collections");
+            System.out.println("\t-e  : to edit collection");
+            System.out.println("\t-s  : to search for a song");
+            System.out.println("\t-p  : play song(s)");
             System.out.println("\t-su : to search for a user");
             System.out.println("\t-fu : to follow a user");
-            System.out.println("\t-u : to unfollow a user");
-            System.out.println("\t-q : to log out");
+            System.out.println("\t-u  : to unfollow a user");
+            System.out.println("\t-q  : to log out");
             System.out.print("> ");
 
             input = reader.readLine();
