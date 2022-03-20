@@ -45,7 +45,7 @@ public class HomePage {
             System.out.println("\t-p : play song(s)");
             System.out.println("\t-su : to search for a user");
             System.out.println("\t-fu : to follow a user");
-            System.out.println("\t-u : to unfollow a user");
+            System.out.println("\t-uf : to unfollow a user");
             System.out.println("\t-q : to log out");
             System.out.print("> ");
 
@@ -73,7 +73,7 @@ public class HomePage {
                 case "-fu":
                     User.FollowUser(conn, reader, this.userID);
                     break;
-                case "-u":
+                case "-uf":
                     User.UnFollowUser(conn, reader, this.userID);
                     break;
                 case "-q":
