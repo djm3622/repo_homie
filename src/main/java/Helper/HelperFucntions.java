@@ -5,6 +5,8 @@ import LoginReg.Reg;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 public class HelperFucntions {
@@ -85,6 +87,57 @@ public class HelperFucntions {
             }
         }
     return by;
+    }
+
+    public static String unpackStats(int by) {
+        boolean evenT = false;      // DESC
+
+        if (by == 0) {
+            return " ";
+        }
+
+        if (by % 2 == 0) {
+            evenT = true;       // ASC
+            by /= 2;
+        }
+
+        switch (by) {
+            case 1:     // name
+                if (evenT) {
+                    return "ORDER BY s.song_name ASC";
+                } else {
+                    return "ORDER BY s.song_name DESC";
+                }
+            case 3:     // artist
+                if (evenT) {
+                    return "ORDER BY ar.artist_name ASC";
+                } else {
+                    return "ORDER BY ar.artist_name DESC";
+                }
+            case 5:     // genre
+                if (evenT) {
+                    return "ORDER BY g.genre_name ASC";
+                } else {
+                    return "ORDER BY g.genre_name DESC";
+                }
+            case 7:     // release year
+                if (evenT) {
+                    return "ORDER BY s.release_date ASC";
+                } else {
+                    return "ORDER BY s.release_date DESC";
+                }
+        }
+        return " ";
+    }
+
+    public static void printStuff(ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            String sn = rs.getString("song_name");
+            String an = rs.getString("artist_name");
+            String l = rs.getString("length");
+            String ab = rs.getString("title");
+            System.out.println("\t-(" + sn + ") by (" + an + ") on (" + ab + ") : (" + l + ")mins");
+        }
     }
 }
 

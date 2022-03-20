@@ -118,6 +118,7 @@ public class Collection {
                     deleteSong(reader, conn, collectionID);
                     break;
                 case "-aa":
+                    addAlbum(reader, conn, collectionID);
                     break;
                 case "-da":
                     break;
@@ -125,6 +126,7 @@ public class Collection {
                     changeCollectionName(reader, conn, collectionID);
                     break;
                 case "-d":
+                    deleteCollection(reader, conn, collectionID);
                     break;
                 case "-c":
                     break;
@@ -162,14 +164,7 @@ public class Collection {
         int in = Integer.parseInt(str);
 
         // find next track_number
-        stmt = conn.prepareStatement("SELECT * FROM p320_09.collection_track where collectionid = " +
-                collectionID + " ORDER BY track_number DESC LIMIT 1");
-        ResultSet set = stmt.executeQuery();
-
-        int track_number = 1;
-        if (set.next()) {
-            track_number = Integer.parseInt(set.getString("track_number")) + 1;
-        }
+        int track_number = getTrackNumber(conn, collectionID);
 
         //insert song
         stmt = conn.prepareStatement("insert into p320_09.collection_track(collectionid, songid, track_number) " +
@@ -227,7 +222,46 @@ public class Collection {
         }
     }
 
-    public static void addAlbum(){
+    public static void addAlbum(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
+        HelperFucntions.barCaps("album name you want to add");
+        System.out.print("> ");
+        String album = reader.readLine();
+
+        PreparedStatement stmt = conn.prepareStatement("select a.albumid, a.title, a.artistid, ar.artist_name " +
+                "from p320_09.album as a, p320_09.artist as ar where ar.artistid = a.artistid and " +
+                "a.title = \'" + album + "\'");
+        ResultSet rs = stmt.executeQuery();
+
+        System.out.println(" ");
+        HelperFucntions.barCaps("enter album id of album to add");
+        int albumID;
+        while(rs.next()){
+            albumID = rs.getInt("albumid");
+            String album_name = rs.getString("title");
+            String artist_name = rs.getString("artist_name");
+            System.out.println("\tID: " + albumID + ", " + album_name + " by " + artist_name);
+        }
+        System.out.print("> ");
+        album = reader.readLine();
+        albumID = Integer.parseInt(album);
+
+        // find track_number
+        int track_number = getTrackNumber(conn, collectionID);
+
+        // select and add all songs in album
+        stmt = conn.prepareStatement("select songid from p320_09.album_track where albumid = " + albumID);
+        ResultSet set = stmt.executeQuery();
+        while(set.next()){
+            int songID = set.getInt("songid");
+            PreparedStatement mt = conn.prepareStatement("insert into p320_09.collection_track(collectionid, " +
+                    "songid, track_number) values (" + collectionID + ", " + songID + ", " + track_number + ")");
+            track_number++;
+            try{
+                mt.executeQuery();
+            }catch (PSQLException ignored){
+            }
+        }
+        System.out.println("Successfully added album");
 
     }
 
@@ -249,7 +283,38 @@ public class Collection {
         }
     }
 
-    public static void deleteCollection(){
+    public static void deleteCollection(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
+        HelperFucntions.barCaps("are you sure you want to delete this collection? (y/n)");
+        String input = reader.readLine();
+        if(input.toLowerCase().equals("y") || input.toLowerCase().equals("yes")) {
+            PreparedStatement stmt = conn.prepareStatement("delete from p320_09.collection_track where " +
+                    "collectionid = " + collectionID );
+            try{
+                stmt.executeQuery();
+            }catch(PSQLException ignored){
 
+            }
+            stmt = conn.prepareStatement("delete from p320_09.collection where collectionid = " + collectionID);
+            try{
+                stmt.executeQuery();
+            }catch(PSQLException ignored){
+            }
+            System.out.println("Successfully deleted collection");
+        }
+        else{
+            System.out.println("Returning to collection edit options");
+        }
+    }
+
+    public static int getTrackNumber(Connection conn, int collectionID) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM p320_09.collection_track where collectionid = " +
+                collectionID + " ORDER BY track_number DESC LIMIT 1");
+        ResultSet set = stmt.executeQuery();
+
+        int track_number = 1;
+        if (set.next()) {
+            track_number = Integer.parseInt(set.getString("track_number")) + 1;
+        }
+        return track_number;
     }
 }
