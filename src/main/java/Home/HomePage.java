@@ -52,11 +52,13 @@ public class HomePage {
                     Collection.createCollection(reader, conn, this.userID);
                     break;
                 case "-v":
+                    Collection.viewCollections(conn, this.userID, false);
                     break;
                 case "-s":
                     SongSearch.entry(conn);
                     break;
                 case "-e":
+                    Collection.chooseCollection(reader, conn, this.userID);
                     break;
                 case "-u":
                     User.UserMain(conn, reader);
