@@ -105,6 +105,7 @@ public class Collection {
             System.out.println("\t-m  : to modify name");
             System.out.println("\t-d  : to delete collection");
             System.out.println("\t-c  : to change collection");
+            System.out.println("\t-v  : to display collection contents");
             System.out.println("\t-q  : to return to home");
             System.out.print("> ");
 
@@ -132,6 +133,8 @@ public class Collection {
                 case "-c":
                     // delete?
                     break;
+                case "-v":
+                    displayCollectionContents(conn, reader, collectionID);
                 case "-q":
                     break label;
             }
@@ -375,5 +378,31 @@ public class Collection {
             track_number = Integer.parseInt(set.getString("track_number")) + 1;
         }
         return track_number;
+    }
+
+    public static void displayCollectionContents(Connection conn, BufferedReader reader, int collectionID) throws SQLException {
+        PreparedStatement stmt;
+        ResultSet rs;
+
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name FROM " +
+                "p320_09.collection_track AS ct, p320_09.artist AS ar, p320_09.song AS s " +
+                "WHERE ct.songid = s.songid " +
+                "AND s.artistid = ar.artistid " +
+                "AND ct.collectionid = " + collectionID);
+        rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            String snm = rs.getString("song_name");
+            String anm = rs.getString("artist_name");
+            System.out.println("\t(" + snm + ") by (" + anm + ")");
+
+            while (rs.next()) {
+                snm = rs.getString("song_name");
+                anm = rs.getString("artist_name");
+                System.out.println("\t(" + snm + ") by (" + anm + ")");
+            }
+        } else {
+            System.out.println("\tCollection is empty.");
+        }
     }
 }
