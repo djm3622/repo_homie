@@ -66,11 +66,12 @@ public class SongSearch {
                 "AND s.song_name LIKE '%" + input + "%'" +
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        HelperFucntions.printStuff(rs);
+        boolean found;
+        found = HelperFucntions.printStuff(rs);
 
         String s;
 
-        while (true) {
+        while (found) {
             int by = HelperFucntions.sortByStats(reader);
             s = HelperFucntions.unpackStats(by);
 
@@ -109,11 +110,12 @@ public class SongSearch {
                 "AND ar.artist_name LIKE '%" + input + "%'" +
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        HelperFucntions.printStuff(rs);
+        boolean found;
+        found = HelperFucntions.printStuff(rs);
 
         String s;
 
-        while (true) {
+        while (found) {
             int by = HelperFucntions.sortByStats(reader);
             s = HelperFucntions.unpackStats(by);
 
@@ -154,11 +156,12 @@ public class SongSearch {
                 "AND a.title LIKE '%" + input + "%'"+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        HelperFucntions.printStuff(rs);
+        boolean found;
+        found = HelperFucntions.printStuff(rs);
 
         String s;
 
-        while (true) {
+        while (found) {
             int by = HelperFucntions.sortByStats(reader);
             s = HelperFucntions.unpackStats(by);
 
@@ -197,11 +200,12 @@ public class SongSearch {
                 "AND g.genre_name LIKE '%" + input + "%'"+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        HelperFucntions.printStuff(rs);
+        boolean found;
+        found = HelperFucntions.printStuff(rs);
 
         String s;
 
-        while (true) {
+        while (found) {
             int by = HelperFucntions.sortByStats(reader);
             s = HelperFucntions.unpackStats(by);
 

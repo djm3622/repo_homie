@@ -72,7 +72,7 @@ public class User {
      *          - user requests follow and already following
      * @param conn
      * @param reader
-
+*/
     public static void FollowUser(Connection conn, BufferedReader reader, int currID
     ) throws SQLException, IOException {
 
@@ -117,21 +117,21 @@ public class User {
             ArrayList<Integer> otherUserfollowers;  //these are of user_id's
             ArrayList<Integer> otherUserfollowing;
 
-            if(otherUserfollowers.contains(currID)){
-                System.out.println("you are already following this user");
-                break;
-            }
-            else{
-                otherUserfollowers.add(currID); //added to their followers
-                currUserfollowing.add(otherID);  //added to ur following
-                //INSERT SQL COMMAND TO ADD these TO DB
-                System.out.println("you are now following this user!");
-                System.out.println("People you are currently following: ");
-                for(int f : currUserfollowing)
-                    System.out.print(f + ", ");
-            }
+//            if(otherUserfollowers.contains(currID)){
+//                System.out.println("you are already following this user");
+//                break;
+//            }
+//            else{
+//                otherUserfollowers.add(currID); //added to their followers
+//                currUserfollowing.add(otherID);  //added to ur following
+//                //INSERT SQL COMMAND TO ADD these TO DB
+//                System.out.println("you are now following this user!");
+//                System.out.println("People you are currently following: ");
+//                for(int f : currUserfollowing)
+//                    System.out.print(f + ", ");
+//            }
         }
-    }*/
+    }
 
     /**
      *      display current list of following too
@@ -141,7 +141,7 @@ public class User {
      *      usr requests unfollow valid, removed as follower.
      * @param conn
      * @param reader
-
+*/
     public static void UnFollowUser(Connection conn, BufferedReader reader, int currID)
             throws SQLException, IOException {
         PreparedStatement stmt1 = conn.prepareStatement("SELECT ? FROM p320_09.follow");
@@ -185,21 +185,21 @@ public class User {
             ArrayList<Integer> otherUserfollowers;  //these are of user_id's
             ArrayList<Integer> otherUserfollowing;
 
-            if(!otherUserfollowers.contains(currID)){
-                System.out.println("you are already following this user");
-                break;
-            }
-            else{
-                otherUserfollowers.remove(currID); //added to their followers
-                currUserfollowing.remove(otherID);  //added to ur following
-                //INSERT SQL COMMAND TO ADD these TO DB
-                System.out.println("you are now following this user!");
-                System.out.println("People you are currently following: ");
-                for(int f : currUserfollowing)
-                    System.out.print(f + ", ");
-            }
+//            if(!otherUserfollowers.contains(currID)){
+//                System.out.println("you are already following this user");
+//                break;
+//            }
+//            else{
+//                otherUserfollowers.remove(currID); //added to their followers
+//                currUserfollowing.remove(otherID);  //added to ur following
+//                //INSERT SQL COMMAND TO ADD these TO DB
+//                System.out.println("you are now following this user!");
+//                System.out.println("People you are currently following: ");
+//                for(int f : currUserfollowing)
+//                    System.out.print(f + ", ");
+//            }
         }
-    }*/
+    }
 
 
 }
