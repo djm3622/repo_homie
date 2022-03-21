@@ -149,6 +149,7 @@ public class Collection {
         ResultSet rs;
         try {
             rs = stmt.executeQuery();
+            String name = rs.getString("song_name");
         }catch(Exception e){
             System.out.println("Song not found");
             return;
@@ -190,8 +191,9 @@ public class Collection {
         ResultSet rs;
         try {
             rs = stmt.executeQuery();
+            String name = rs.getString("song_name");
         }catch(Exception e){
-            System.out.println("Album not found");
+            System.out.println("Song not found");
             return;
         }
         System.out.println(" ");
@@ -232,7 +234,14 @@ public class Collection {
         PreparedStatement stmt = conn.prepareStatement("select a.albumid, a.title, a.artistid, ar.artist_name " +
                 "from p320_09.album as a, p320_09.artist as ar where ar.artistid = a.artistid and " +
                 "a.title = \'" + album + "\'");
-        ResultSet rs = stmt.executeQuery();
+        ResultSet rs;
+        try{
+            rs = stmt.executeQuery();
+            String title = rs.getString("title");
+        }catch(PSQLException e){
+            System.out.println("Album not found");
+            return;
+        }
 
         System.out.println(" ");
         HelperFucntions.barCaps("enter album id of album to add");
@@ -278,8 +287,9 @@ public class Collection {
         ResultSet rs;
         try {
             rs = stmt.executeQuery();
+            String title = rs.getString("title");
         }catch(Exception e){
-            System.out.println("Song not found");
+            System.out.println("Album not found");
             return;
         }
         System.out.println(" ");
