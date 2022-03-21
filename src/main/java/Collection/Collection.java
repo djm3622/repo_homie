@@ -6,6 +6,7 @@ import org.postgresql.util.PSQLException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 public class Collection {
     public static void createCollection(BufferedReader reader, Connection conn, int userID) throws SQLException, IOException {
@@ -134,7 +135,7 @@ public class Collection {
                     // delete?
                     break;
                 case "-v":
-                    displayCollectionContents(conn, reader, collectionID);
+                    displayCollectionContents(conn, collectionID);
                 case "-q":
                     break label;
             }
@@ -196,10 +197,9 @@ public class Collection {
         try {
             rs = stmt.executeQuery();
         }catch(Exception e){
-            System.out.println("Song not found");
+            System.out.println("\tSong not found.");
             return;
         }
-        System.out.println(" ");
         HelperFucntions.barCaps("enter track number of song to delete");
         while(rs.next()){
             int track_number = rs.getInt("track_number");
@@ -217,7 +217,7 @@ public class Collection {
         try{
             stmt.executeQuery();
         }catch (PSQLException e){
-            System.out.println("Successfully deleted song");
+            System.out.println("\tSuccessfully deleted song.");
         }
 
         // update track_numbers
@@ -243,11 +243,10 @@ public class Collection {
         try{
             rs = stmt.executeQuery();
         }catch(PSQLException e){
-            System.out.println("Album not found");
+            System.out.println("\tAlbum not found.");
             return;
         }
 
-        System.out.println(" ");
         HelperFucntions.barCaps("enter album id of album to add");
         int albumID;
         while(rs.next()){
@@ -276,7 +275,7 @@ public class Collection {
             }catch (PSQLException ignored){
             }
         }
-        System.out.println("Successfully added album");
+        System.out.println("\tSuccessfully added album.");
 
     }
 
@@ -287,13 +286,13 @@ public class Collection {
         String input = reader.readLine();
 
         PreparedStatement stmt = conn.prepareStatement("select a.albumid, a.title, ar.artist_name from " +
-                "p320_09.album as a, p320_09.album_track as at, p320_09.artist as ar where a.title = \'" + input +
-                "\' and a.albumid = at.albumid and a.artistid = ar.artistid");
+                "p320_09.album as a, p320_09.album_track as at, p320_09.artist as ar where a.title = '" + input +
+                "' and a.albumid = at.albumid and a.artistid = ar.artistid");
         ResultSet rs;
         try {
             rs = stmt.executeQuery();
         }catch(Exception e){
-            System.out.println("Album not found");
+            System.out.println("\tAlbum not found.");
             e.printStackTrace();
             return;
         }
@@ -307,7 +306,7 @@ public class Collection {
             System.out.println("\tID: " + albumID + ", " + title + " by " + artist_name);
           }
         else{
-            System.out.println("Could not find album");
+            System.out.println("\tCould not find album.");
             return;
         }
         System.out.print("> ");
@@ -321,8 +320,7 @@ public class Collection {
         while(set.next()){
             int songID = set.getInt("songid");
             int track = set.getInt("track_number");
-            System.out.println("songID: " + songID);
-            System.out.println("track: " + track);
+
             // delete song
             PreparedStatement mt = conn.prepareStatement("delete from p320_09.collection_track where " +
                     "collectionid = " + collectionID + " and songid = " + songID);
@@ -330,9 +328,9 @@ public class Collection {
                 mt.executeQuery();
             }catch(PSQLException ignored){
             }
-            updateTrackNumber(conn, collectionID,track);
         }
-        System.out.println("Successfully deleted album");
+        updateTrackNumber(conn, collectionID);
+        System.out.println("\tSuccessfully deleted album.");
     }
 
     public static void changeCollectionName(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
@@ -372,13 +370,32 @@ public class Collection {
         }
     }
 
-    public static void updateTrackNumber(Connection conn, int collectionID, int track) throws SQLException {
+    public static void updateTrackNumber(Connection conn, int collectionID) throws SQLException {
         // update track numbers
-        PreparedStatement state = conn.prepareStatement("update p320_09.collection_track set track_number = " +
-                "(track_number - 1) where track_number > " + track + " and collectionid = " + collectionID);
-        try{
-            state.executeQuery();
-        }catch (PSQLException ignored){
+        PreparedStatement stmt = conn.prepareStatement("SELECT songid " +
+                "FROM p320_09.collection_track " +
+                "WHERE collectionid = " + collectionID);
+        ResultSet rs = stmt.executeQuery();
+
+        int count = 1;
+
+        if (rs.next()) {
+            int songid = rs.getInt("songid");
+            stmt = conn.prepareStatement("UPDATE p320_09.collection_track SET track_number = " + count + " " +
+                    "WHERE collectionid = " + collectionID + " AND songid = " + songid);
+            try {
+                stmt.executeQuery();
+            } catch (Exception ignored) {}
+            count++;
+            while(rs.next()) {
+                songid = rs.getInt("songid");
+                stmt = conn.prepareStatement("UPDATE p320_09.collection_track SET track_number = " + count + " " +
+                        "WHERE collectionid = " + collectionID + " AND songid = " + songid);
+                try {
+                    stmt.executeQuery();
+                } catch (Exception ignored) {}
+                count++;
+            }
         }
     }
 
@@ -394,7 +411,7 @@ public class Collection {
         return track_number;
     }
 
-    public static void displayCollectionContents(Connection conn, BufferedReader reader, int collectionID) throws SQLException {
+    public static void displayCollectionContents(Connection conn, int collectionID) throws SQLException {
         PreparedStatement stmt;
         ResultSet rs;
 

@@ -56,14 +56,15 @@ public class SongSearch {
         System.out.print("Song Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
-                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                 "WHERE s.artistID = ar.artistID " +
                 "AND g.genreid = s.genreid " +
                 "AND ar.artistID = a.artistID " +
                 "AND at.songID = s.songID " +
                 "AND at.albumID = a.albumID " +
-                "AND s.song_name LIKE '%" + input + "%'" +
+                "AND s.song_name LIKE '%" + input + "%' " +
+                "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
         boolean found;
@@ -79,13 +80,14 @@ public class SongSearch {
                 break;
             }
 
-            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
-                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                     "WHERE s.artistID = ar.artistID " +
                     "AND g.genreid = s.genreid " +
                     "AND ar.artistID = a.artistID " +
                     "AND at.songID = s.songID " +
                     "AND at.albumID = a.albumID " +
+                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+
                     "AND s.song_name LIKE '%" + input + "%'" +s);
             rs = stmt.executeQuery();
 
@@ -100,14 +102,15 @@ public class SongSearch {
         System.out.print("Artist Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
-                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                 "WHERE s.artistID = ar.artistID " +
                 "AND g.genreid = s.genreid " +
                 "AND ar.artistID = a.artistID " +
                 "AND at.songID = s.songID " +
                 "AND at.albumID = a.albumID " +
                 "AND ar.artist_name LIKE '%" + input + "%'" +
+                "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
         boolean found;
@@ -123,14 +126,15 @@ public class SongSearch {
                 break;
             }
 
-            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
-                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                     "WHERE s.artistID = ar.artistID " +
                     "AND g.genreid = s.genreid " +
                     "AND ar.artistID = a.artistID " +
                     "AND at.songID = s.songID " +
                     "AND at.albumID = a.albumID " +
-                    "AND ar.artist_name LIKE '%" + input + "%'" + s);
+                    "AND ar.artist_name LIKE '%" + input + "%' " +
+                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+ s);
             rs = stmt.executeQuery();
 
             HelperFucntions.printStuff(rs);
@@ -146,14 +150,15 @@ public class SongSearch {
         System.out.print("Album Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
-                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                 "WHERE s.artistID = ar.artistID " +
                 "AND g.genreid = s.genreid " +
                 "AND ar.artistID = a.artistID " +
                 "AND at.songID = s.songID " +
                 "AND at.albumID = a.albumID " +
-                "AND a.title LIKE '%" + input + "%'"+
+                "AND a.title LIKE '%" + input + "%' "+
+                "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
         boolean found;
@@ -169,14 +174,15 @@ public class SongSearch {
                 break;
             }
 
-            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
-                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                     "WHERE s.artistID = ar.artistID " +
                     "AND g.genreid = s.genreid " +
                     "AND ar.artistID = a.artistID " +
                     "AND at.songID = s.songID " +
                     "AND at.albumID = a.albumID " +
-                    "AND a.title LIKE '%" + input + "%'" + s);
+                    "AND a.title LIKE '%" + input + "%'" +
+                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+ s);
             rs = stmt.executeQuery();
 
             HelperFucntions.printStuff(rs);
@@ -190,14 +196,15 @@ public class SongSearch {
         System.out.print("Genre Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
-                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at " +
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                 "WHERE s.artistID = ar.artistID " +
                 "AND g.genreid = s.genreid " +
                 "AND ar.artistID = a.artistID " +
                 "AND at.songID = s.songID " +
                 "AND at.albumID = a.albumID " +
                 "AND g.genre_name LIKE '%" + input + "%'"+
+                "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
         boolean found;
@@ -213,14 +220,15 @@ public class SongSearch {
                 break;
             }
 
-            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title " +
-                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g, p320_09.album AS a, p320_09.album_track AS at " +
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+                    "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                     "WHERE s.artistID = ar.artistID " +
                     "AND g.genreid = s.genreid " +
                     "AND ar.artistID = a.artistID " +
                     "AND at.songID = s.songID " +
                     "AND at.albumID = a.albumID " +
-                    "AND g.genre_name LIKE '%" + input + "%'"+s);
+                    "AND g.genre_name LIKE '%" + input + "%' "+
+                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+s);
             rs = stmt.executeQuery();
 
             HelperFucntions.printStuff(rs);

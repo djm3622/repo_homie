@@ -137,7 +137,8 @@ public class HelperFucntions {
             String an = rs.getString("artist_name");
             String l = rs.getString("length");
             String ab = rs.getString("title");
-            System.out.println("\t-(" + sn + ") by (" + an + ") on (" + ab + ") : (" + l + ")mins");
+            String c = rs.getString("user_count");
+            System.out.println("\t-(" + sn + ") by (" + an + ") on (" + ab + ") : (" + l + ")mins -> Played " + c + " Times.");
             while (rs.next()) {
                 sn = rs.getString("song_name");
                 an = rs.getString("artist_name");
@@ -152,50 +153,5 @@ public class HelperFucntions {
         }
         return true;
     }
-
-    /**public static void addSong(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
-        HelperFucntions.barCaps("song name you want to add");
-        System.out.print("> ");
-        String input = reader.readLine();
-
-        // find and verify song to add
-        PreparedStatement stmt = conn.prepareStatement("select s.songid, s.song_name, a.artist_name from " +
-                "p320_09.song as s, p320_09.artist as a where s.artistid = a.artistid and s.song_name = '" + input +"';");
-        ResultSet rs;
-
-        rs = stmt.executeQuery();
-
-        if (rs.next()) {
-            HelperFucntions.barCaps("enter id of song to add");
-            int songID = rs.getInt("songid");
-            String song_name = rs.getString("song_name");
-            String artist_name = rs.getString("artist_name");
-            System.out.println("\tid: " + songID + ", " + song_name + " by " + artist_name);
-
-            while (rs.next()) {
-                songID = rs.getInt("songid");
-                song_name = rs.getString("song_name");
-                artist_name = rs.getString("artist_name");
-                System.out.println("\tid: " + songID + ", " + song_name + " by " + artist_name);
-            }
-
-            System.out.print("> ");
-            String str = reader.readLine();
-            int in = Integer.parseInt(str);
-
-            int track_number = getTrackNumber(conn, collectionID);
-
-            stmt = conn.prepareStatement("insert into p320_09.collection_track(collectionid, songid, track_number) " +
-                    "values (" + collectionID + ", " + in + ", " + track_number + ")");
-
-            try {
-                stmt.executeQuery();
-            } catch (PSQLException e) {
-                System.out.println("\tSong added.");
-            }
-        } else {
-            System.out.println("\tSong does not exist.");
-        }
-    }*/
 }
 
