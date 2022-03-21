@@ -4,11 +4,8 @@ import Helper.HelperFucntions;
 import Home.HomePage;
 
 import java.io.IOException;
-import java.sql.Connection;
+import java.sql.*;
 import java.io.BufferedReader;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -76,15 +73,22 @@ public class User {
     public static void FollowUser(Connection conn, BufferedReader reader, int currID
     ) throws SQLException, IOException {
 
-        PreparedStatement stmt1 = conn.prepareStatement("SELECT ? FROM p320_09.follow");
-        ResultSet rs1 = stmt1.executeQuery();
         //get query to return a list of followers and following for the given userID (current user)
+        PreparedStatement stmt1 = conn.prepareStatement("SELECT f.follower, f.following " +
+                "FROM p320_09.follow AS f, p320_09.user AS U WHERE f.follower = u.userID " +
+                "AND u.userID = ?");
+        ResultSet rs1 = stmt1.executeQuery("currID");
+        ArrayList<Integer> currUserfollowers = new ArrayList<>();  //these are of user_id's
+        ArrayList<Integer> currUserfollowing = new ArrayList<>();
+        while (rs1.next()) {
+            int follower = rs1.getInt("follower");
+            currUserfollowers.add(follower);
+            int following = rs1.getInt("following");
+            currUserfollowing.add(following);
+        }
 
-        //assume for now that I have found the list of followers/following FOR THIS USER:
-        ArrayList<Integer> currUserfollowers;  //these are of user_id's
-        ArrayList<Integer> currUserfollowing;
 
-        int otherID;
+        int otherID =0;
 
         HelperFucntions.barCaps("Follow a Friend");
         String otherUs;
@@ -105,31 +109,49 @@ public class User {
                     break;
                 }
             }
+
             if(!found){
                 System.out.println("this user does not exist");
                 break;
             }
-            PreparedStatement stmt3 = conn.prepareStatement("SELECT ? FROM p320_09.follow");
-            ResultSet rs3 = stmt3.executeQuery();
+
             //get query to return a list of followers and following for the given otherID (other user)
+            PreparedStatement stmt3 = conn.prepareStatement("SELECT f.follower, f.following " +
+                    "FROM p320_09.follow AS f, p320_09.user AS U WHERE f.follower = u.userID " +
+                    "AND u.userID = ?");
+            ResultSet rs3 = stmt3.executeQuery("otherID");
 
-            //assume for now that I have found the list of followers/following FOR THIS USER:
-            ArrayList<Integer> otherUserfollowers;  //these are of user_id's
-            ArrayList<Integer> otherUserfollowing;
+            ArrayList<Integer> otherUserfollowers = new ArrayList<>();  //these are of user_id's
+            ArrayList<Integer> otherUserfollowing = new ArrayList<>();
+            while (rs1.next()) {
+                int follower = rs1.getInt("follower");
+                otherUserfollowers.add(follower);
+                int following = rs1.getInt("following");
+                otherUserfollowing.add(following);
+            }
 
-//            if(otherUserfollowers.contains(currID)){
-//                System.out.println("you are already following this user");
-//                break;
-//            }
-//            else{
-//                otherUserfollowers.add(currID); //added to their followers
-//                currUserfollowing.add(otherID);  //added to ur following
-//                //INSERT SQL COMMAND TO ADD these TO DB
-//                System.out.println("you are now following this user!");
-//                System.out.println("People you are currently following: ");
-//                for(int f : currUserfollowing)
-//                    System.out.print(f + ", ");
-//            }
+
+            if(otherUserfollowers.contains(currID)){
+                System.out.println("you are already following this user");
+                break;
+            }
+            else{
+                otherUserfollowers.add(currID); //added to their followers
+                currUserfollowing.add(otherID);  //added to ur following
+                //INSERT SQL COMMAND TO ADD these TO DB
+                /*
+                PreparedStatement stmt4 = conn.prepareStatement("INSERT INTO p320_09.follow " +
+                        "(follower, following)\n" +
+                        "VALUES (?, ?);");
+                ResultSet rs4 = stmt3.executeQuery("currID", "otherID");
+                */
+
+
+                System.out.println("you are now following this user!");
+                System.out.println("People you are currently following: ");
+                for(int f : currUserfollowing)
+                    System.out.print(f + ", ");
+            }
         }
     }
 
@@ -144,15 +166,21 @@ public class User {
 */
     public static void UnFollowUser(Connection conn, BufferedReader reader, int currID)
             throws SQLException, IOException {
-        PreparedStatement stmt1 = conn.prepareStatement("SELECT ? FROM p320_09.follow");
-        ResultSet rs1 = stmt1.executeQuery();
         //get query to return a list of followers and following for the given userID (current user)
+        PreparedStatement stmt1 = conn.prepareStatement("SELECT f.follower, f.following " +
+                "FROM p320_09.follow AS f, p320_09.user AS U WHERE f.follower = u.userID " +
+                "AND u.userID = ?");
+        ResultSet rs1 = stmt1.executeQuery("currID");
+        ArrayList<Integer> currUserfollowers = new ArrayList<>();  //these are of user_id's
+        ArrayList<Integer> currUserfollowing = new ArrayList<>();
+        while (rs1.next()) {
+            int follower = rs1.getInt("follower");
+            currUserfollowers.add(follower);
+            int following = rs1.getInt("following");
+            currUserfollowing.add(following);
+        }
 
-        //assume for now that I have found the list of followers/following FOR THIS USER:
-        ArrayList<Integer> currUserfollowers;  //these are of user_id's
-        ArrayList<Integer> currUserfollowing;
-
-        int otherID;
+        int otherID = 0;
 
         HelperFucntions.barCaps("Unfollow a Friend");
         String otherUs;
@@ -177,27 +205,33 @@ public class User {
                 System.out.println("this user does not exist");
                 break;
             }
-            PreparedStatement stmt3 = conn.prepareStatement("SELECT ? FROM p320_09.follow");
-            ResultSet rs3 = stmt3.executeQuery();
-            //get query to return a list of followers and following for the given otherID (other user)
+            PreparedStatement stmt3 = conn.prepareStatement("SELECT f.follower, f.following " +
+                    "FROM p320_09.follow AS f, p320_09.user AS U WHERE f.follower = u.userID " +
+                    "AND u.userID = ?");
+            ResultSet rs3 = stmt3.executeQuery("otherID");
 
-            //assume for now that I have found the list of followers/following FOR THIS USER:
-            ArrayList<Integer> otherUserfollowers;  //these are of user_id's
-            ArrayList<Integer> otherUserfollowing;
+            ArrayList<Integer> otherUserfollowers = new ArrayList<>();  //these are of user_id's
+            ArrayList<Integer> otherUserfollowing = new ArrayList<>();
+            while (rs1.next()) {
+                int follower = rs1.getInt("follower");
+                otherUserfollowers.add(follower);
+                int following = rs1.getInt("following");
+                otherUserfollowing.add(following);
+            }
 
-//            if(!otherUserfollowers.contains(currID)){
-//                System.out.println("you are already following this user");
-//                break;
-//            }
-//            else{
-//                otherUserfollowers.remove(currID); //added to their followers
-//                currUserfollowing.remove(otherID);  //added to ur following
-//                //INSERT SQL COMMAND TO ADD these TO DB
-//                System.out.println("you are now following this user!");
-//                System.out.println("People you are currently following: ");
-//                for(int f : currUserfollowing)
-//                    System.out.print(f + ", ");
-//            }
+            if(!otherUserfollowers.contains(currID)){
+                System.out.println("you are already following this user");
+                break;
+            }
+            else{
+                otherUserfollowers.remove(currID); //added to their followers
+                currUserfollowing.remove(otherID);  //added to ur following
+                //INSERT SQL COMMAND TO ADD these TO DB
+                System.out.println("you are now following this user!");
+                System.out.println("People you are currently following: ");
+                for(int f : currUserfollowing)
+                    System.out.print(f + ", ");
+            }
         }
     }
 
