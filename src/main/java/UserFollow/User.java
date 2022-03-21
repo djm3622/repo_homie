@@ -231,7 +231,7 @@ public class User {
                 System.out.println("People you are currently following: ");
                 for(int f : currUserfollowing)
                     System.out.print(f + ", ");
-            }g
+            }
         }
     }
 
