@@ -297,16 +297,16 @@ public class Collection {
         System.out.println(" ");
         HelperFucntions.barCaps("enter album id of album to delete");
         int albumID;
-        while(rs.next()){
+        if(rs.next()){
             albumID = rs.getInt("albumid");
             String title = rs.getString("title");
             String artist_name = rs.getString("artist_name");
             System.out.println("\tID: " + albumID + ", " + title + " by " + artist_name);
           }
-//        else{
-//            System.out.println("Could not find album");
-//            return;
-//        }
+        else{
+            System.out.println("Could not find album");
+            return;
+        }
         System.out.print("> ");
         String temp = reader.readLine();
         albumID = Integer.parseInt(temp);
@@ -315,7 +315,7 @@ public class Collection {
                 "p320_09.collection_track as ct where at.albumid = " + albumID + " and at.songid = ct.songid and " +
                 "collectionid = " + collectionID);
         ResultSet set = stmt.executeQuery();
-        if(set.next()){
+        while(set.next()){
             int songID = set.getInt("songid");
             int track = set.getInt("track_number");
             System.out.println("songID: " + songID);
