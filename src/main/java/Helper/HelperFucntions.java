@@ -2,12 +2,12 @@ package Helper;
 
 import LoginReg.Login;
 import LoginReg.Reg;
+import org.postgresql.util.PSQLException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
 public class HelperFucntions {
@@ -150,10 +150,6 @@ public class HelperFucntions {
             return false;
         }
         return true;
-    }
-
-    public static void inputSong(Connection conn, BufferedReader reader) {
-
     }
 
     public static void inputCollection(Connection conn, BufferedReader reader, int userid) {
