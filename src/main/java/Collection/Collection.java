@@ -121,6 +121,7 @@ public class Collection {
                     addAlbum(reader, conn, collectionID);
                     break;
                 case "-da":
+                    deleteAlbum(reader, conn, collectionID);
                     break;
                 case "-m":
                     changeCollectionName(reader, conn, collectionID);
@@ -129,6 +130,7 @@ public class Collection {
                     deleteCollection(reader, conn, collectionID);
                     break;
                 case "-c":
+                    // delete?
                     break;
                 case "-q":
                     break label;
@@ -189,7 +191,7 @@ public class Collection {
         try {
             rs = stmt.executeQuery();
         }catch(Exception e){
-            System.out.println("Song not found");
+            System.out.println("Album not found");
             return;
         }
         System.out.println(" ");
@@ -265,8 +267,55 @@ public class Collection {
 
     }
 
-    public static void deleteAlbum(){
+    public static void deleteAlbum(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
+        HelperFucntions.barCaps("name of album you want to delete");
+        System.out.print("> ");
+        String input = reader.readLine();
 
+        PreparedStatement stmt = conn.prepareStatement("select a.albumid, a.title, ar.artist_name, from " +
+                "p320_09.album as a, p320_09.album_track as at, p320_09.artist as ar, where a.title = \'" + input +
+                "\' and a.albumid = at.albumid and a.artistid = ar.artistid");
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery();
+        }catch(Exception e){
+            System.out.println("Song not found");
+            return;
+        }
+        System.out.println(" ");
+        HelperFucntions.barCaps("enter album id of album to delete");
+        int albumID;
+        while(rs.next()){
+            albumID = rs.getInt("albumid");
+            String title = rs.getString("title");
+            String artist_name = rs.getString("artist_name");
+            System.out.println("\tID: " + albumID + ", " + title + " by " + artist_name);
+        }
+        System.out.print("> ");
+        String temp = reader.readLine();
+        albumID = Integer.parseInt(temp);
+
+        stmt = conn.prepareStatement("select at.songid, ct.track_number from p320_09.album_track as at, " +
+                "p320_09.collection_track as ct where at.albumid = " + albumID + " and at.songid = ct.songid");
+        ResultSet set = stmt.executeQuery();
+        while(set.next()){
+            int songID = set.getInt("songid");
+            int track = set.getInt("track_number");
+            // delete song
+            PreparedStatement mt = conn.prepareStatement("delete from p320_09.collection_track where " +
+                    "collectionid = " + collectionID + " and songid = " + songID);
+            try{
+                mt.executeQuery();
+            }catch(PSQLException ignored){
+            }
+            // update track numbers
+            stmt = conn.prepareStatement("update p320_09.collection_track set track_number = (track_number - 1) " +
+                    "where track_number > " + track);
+            try{
+                stmt.executeQuery();
+            }catch (PSQLException ignored){
+            }
+        }
     }
 
     public static void changeCollectionName(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {

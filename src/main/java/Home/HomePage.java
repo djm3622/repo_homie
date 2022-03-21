@@ -46,8 +46,6 @@ public class HomePage {
             System.out.println("\t-su : to search for a user");
             System.out.println("\t-fu : to follow a user");
             System.out.println("\t-uf : to unfollow a user");
-            System.out.println("\t-q : to log out");
-            System.out.println("\t-u  : to unfollow a user");
             System.out.println("\t-q  : to log out");
             System.out.print("> ");
 
