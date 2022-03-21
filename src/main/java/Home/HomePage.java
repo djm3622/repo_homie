@@ -73,10 +73,10 @@ public class HomePage {
                     User.SearchUser(conn, reader);
                     break;
                 case "-fu":
-                    User.FollowUser(conn, reader, this.userID);
+                    //User.FollowUser(conn, reader, this.userID);
                     break;
                 case "-uf":
-                    User.UnFollowUser(conn, reader, this.userID);
+                    //User.UnFollowUser(conn, reader, this.userID);
                     break;
                 case "-q":
                     System.out.println("Logging out");

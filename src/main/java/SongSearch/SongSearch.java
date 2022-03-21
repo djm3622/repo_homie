@@ -66,7 +66,7 @@ public class SongSearch {
                 "AND s.song_name LIKE '%" + input + "%'" +
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        boolean found = true;
+        boolean found;
         found = HelperFucntions.printStuff(rs);
 
         String s;
@@ -110,7 +110,7 @@ public class SongSearch {
                 "AND ar.artist_name LIKE '%" + input + "%'" +
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        boolean found = true;
+        boolean found;
         found = HelperFucntions.printStuff(rs);
 
         String s;
@@ -156,7 +156,7 @@ public class SongSearch {
                 "AND a.title LIKE '%" + input + "%'"+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        boolean found = true;
+        boolean found;
         found = HelperFucntions.printStuff(rs);
 
         String s;
@@ -200,7 +200,7 @@ public class SongSearch {
                 "AND g.genre_name LIKE '%" + input + "%'"+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
-        boolean found = true;
+        boolean found;
         found = HelperFucntions.printStuff(rs);
 
         String s;
