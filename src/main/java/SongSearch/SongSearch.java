@@ -64,7 +64,7 @@ public class SongSearch {
                 "AND at.songID = s.songID " +
                 "AND at.albumID = a.albumID " +
                 "AND s.song_name LIKE '%" + input + "%' " +
-                "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+
+                "GROUP BY a.title, s.song_name, ar.artist_name, s.length, g.genre_name, s.release_date "+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
         boolean found;
@@ -87,8 +87,8 @@ public class SongSearch {
                     "AND ar.artistID = a.artistID " +
                     "AND at.songID = s.songID " +
                     "AND at.albumID = a.albumID " +
-                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+
-                    "AND s.song_name LIKE '%" + input + "%'" +s);
+                    "AND s.song_name LIKE '%" + input + "%' " +
+                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length, g.genre_name, s.release_date " + s);
             rs = stmt.executeQuery();
 
             HelperFucntions.printStuff(rs);
@@ -110,7 +110,7 @@ public class SongSearch {
                 "AND at.songID = s.songID " +
                 "AND at.albumID = a.albumID " +
                 "AND ar.artist_name LIKE '%" + input + "%'" +
-                "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+
+                "GROUP BY a.title, s.song_name, ar.artist_name, s.length, g.genre_name, s.release_date "+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
         boolean found;
@@ -134,7 +134,7 @@ public class SongSearch {
                     "AND at.songID = s.songID " +
                     "AND at.albumID = a.albumID " +
                     "AND ar.artist_name LIKE '%" + input + "%' " +
-                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+ s);
+                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length, g.genre_name, s.release_date "+ s);
             rs = stmt.executeQuery();
 
             HelperFucntions.printStuff(rs);
@@ -158,7 +158,7 @@ public class SongSearch {
                 "AND at.songID = s.songID " +
                 "AND at.albumID = a.albumID " +
                 "AND a.title LIKE '%" + input + "%' "+
-                "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+
+                "GROUP BY a.title, s.song_name, ar.artist_name, s.length, g.genre_name, s.release_date "+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
         boolean found;
@@ -182,7 +182,7 @@ public class SongSearch {
                     "AND at.songID = s.songID " +
                     "AND at.albumID = a.albumID " +
                     "AND a.title LIKE '%" + input + "%'" +
-                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+ s);
+                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length, g.genre_name, s.release_date "+ s);
             rs = stmt.executeQuery();
 
             HelperFucntions.printStuff(rs);
@@ -204,7 +204,7 @@ public class SongSearch {
                 "AND at.songID = s.songID " +
                 "AND at.albumID = a.albumID " +
                 "AND g.genre_name LIKE '%" + input + "%'"+
-                "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+
+                "GROUP BY a.title, s.song_name, ar.artist_name, s.length, g.genre_name, s.release_date "+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");
         rs = stmt.executeQuery();
         boolean found;
@@ -228,7 +228,7 @@ public class SongSearch {
                     "AND at.songID = s.songID " +
                     "AND at.albumID = a.albumID " +
                     "AND g.genre_name LIKE '%" + input + "%' "+
-                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length "+s);
+                    "GROUP BY a.title, s.song_name, ar.artist_name, s.length, g.genre_name, s.release_date "+s);
             rs = stmt.executeQuery();
 
             HelperFucntions.printStuff(rs);
