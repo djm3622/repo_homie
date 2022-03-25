@@ -38,7 +38,6 @@ public class User {
                 }
                 if(!foundOrQuit){
                     System.out.println("\tWhoops, not valid :(");
-
                     System.out.println("If you wish to return to main menu enter '-m',or enter to continue:");
                     String tempEnter = reader.readLine();
                     if(tempEnter.equals("-m"))
@@ -60,8 +59,6 @@ public class User {
 */
     public static void FollowUser(Connection conn, BufferedReader reader, int currID
     ) throws SQLException, IOException {
-
-        //get query to return a list of followers and following for the given userID (current user)
         PreparedStatement stmt1 = conn.prepareStatement("SELECT f.user, f.following " +
                 "FROM p320_09.follow AS f, p320_09.user AS U WHERE f.user = u.userID " +
                 "AND u.userID = " + currID);
@@ -132,7 +129,6 @@ public class User {
             int following = rs1.getInt("following");
             usrIds.add(following);
         }
-
         for(int i = 0; i<usrIds.size(); i++) {
             PreparedStatement stmt2 = conn.prepareStatement("SELECT username, userid FROM p320_09.user");
             ResultSet rs2 = stmt2.executeQuery();
@@ -159,7 +155,6 @@ public class User {
 
     public static void UnFollowUser(Connection conn, BufferedReader reader, int currID)
             throws SQLException, IOException {
-        //get query to return a list of followers and following for the given userID (current user)
         PreparedStatement stmt1 = conn.prepareStatement("SELECT f.user, f.following " +
                 "FROM p320_09.follow AS f, p320_09.user AS U WHERE f.user = u.userID " +
                 "AND u.userID = " + currID);
