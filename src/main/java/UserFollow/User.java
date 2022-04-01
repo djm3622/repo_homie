@@ -31,7 +31,7 @@ public class User {
                     String us = rs.getString("username");
                     if (email.equals(em)) {
                         System.out.println("User with provided email exists!");
-                        System.out.println("You found me \n\t - user: " + em);
+                        System.out.println("You found me \n\t - user: " + us);
                         foundOrQuit = true;
                         break;
                     }

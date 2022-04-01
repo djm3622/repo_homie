@@ -3,11 +3,8 @@ package Home;
 import Collection.Collection;
 import Helper.HelperFucntions;
 import Listening.Played;
-<<<<<<< HEAD
 import Reccs.Recc;
-=======
 import SongRec.SongRec;
->>>>>>> 3276d76f9be329a7e39c13c408a0788cd6df067d
 import SongSearch.SongSearch;
 import UserFollow.User;
 
