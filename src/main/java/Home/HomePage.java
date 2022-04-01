@@ -2,7 +2,11 @@ package Home;
 
 import Collection.Collection;
 import Listening.Played;
+<<<<<<< HEAD
 import Reccs.Recc;
+=======
+import SongRec.SongRec;
+>>>>>>> 3276d76f9be329a7e39c13c408a0788cd6df067d
 import SongSearch.SongSearch;
 import UserFollow.User;
 
@@ -47,6 +51,7 @@ public class HomePage {
             System.out.println("\t-su : to search for a user");
             System.out.println("\t-fu : to follow a user");
             System.out.println("\t-uf : to unfollow a user");
+            System.out.println("\t-re : get the rec");
             System.out.println("\t-q  : to log out");
             System.out.println("\t-r  : see your recommended songs");
             System.out.print("> ");
@@ -80,6 +85,8 @@ public class HomePage {
                     break;
                 case "-r":
                     Recc.Recc();
+                case "-re":
+                    SongRec.entry(conn, reader);
                     break;
                 case "-q":
                     System.out.println("Logging out");
