@@ -2,6 +2,7 @@ package Home;
 
 import Collection.Collection;
 import Listening.Played;
+import SongRec.SongRec;
 import SongSearch.SongSearch;
 import UserFollow.User;
 
@@ -46,6 +47,7 @@ public class HomePage {
             System.out.println("\t-su : to search for a user");
             System.out.println("\t-fu : to follow a user");
             System.out.println("\t-uf : to unfollow a user");
+            System.out.println("\t-re : get the rec");
             System.out.println("\t-q  : to log out");
             System.out.print("> ");
 
@@ -75,6 +77,9 @@ public class HomePage {
                     break;
                 case "-uf":
                     User.UnFollowUser(conn, reader, this.userID);
+                    break;
+                case "-re":
+                    SongRec.entry(conn, reader);
                     break;
                 case "-q":
                     System.out.println("Logging out");
