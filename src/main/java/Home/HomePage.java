@@ -1,7 +1,9 @@
 package Home;
 
 import Collection.Collection;
+import Helper.HelperFucntions;
 import Listening.Played;
+import Reccs.Recc;
 import SongRec.SongRec;
 import SongSearch.SongSearch;
 import UserFollow.User;
@@ -31,7 +33,20 @@ public class HomePage {
         }
     }
     public void homeHandle(BufferedReader reader, Connection conn) throws IOException, SQLException {
-        System.out.println("\nWelcome " + first_name + "!");
+        System.out.println();
+        HelperFucntions.barCaps("Welcome " + first_name + "!");
+
+        System.out.print("Followers: ");
+        printNumFollowers(conn, this.userID);
+
+        System.out.print("\tFollowing: ");
+        printNumFollowing(conn, this.userID);
+
+        System.out.print("\nNumber of Collections: ");
+        printNumCollections(conn, this.userID);
+
+        System.out.println("\nTop 10 Artists: ");
+        printTopArtists(conn, this.userID);
 
         String input;
 
@@ -49,6 +64,7 @@ public class HomePage {
             System.out.println("\t-uf : to unfollow a user");
             System.out.println("\t-re : get the rec");
             System.out.println("\t-q  : to log out");
+            System.out.println("\t-r  : see your recommended songs");
             System.out.print("> ");
 
             input = reader.readLine();
@@ -78,6 +94,8 @@ public class HomePage {
                 case "-uf":
                     User.UnFollowUser(conn, reader, this.userID);
                     break;
+                case "-r":
+                    Recc.Recc();
                 case "-re":
                     SongRec.entry(conn, reader);
                     break;
@@ -85,6 +103,75 @@ public class HomePage {
                     System.out.println("Logging out");
                     break label;
             }
+        }
+    }
+
+    private void printNumFollowers(Connection conn, int userID) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("select count(f.following) from " +
+                "p320_09.follow as f where f.user = " + userID);
+        ResultSet rs;
+        try{
+            rs = stmt.executeQuery();
+        }catch(Exception e){
+            System.out.println("Could not find followers");
+            return;
+        }
+        while(rs.next()){
+            int num = rs.getInt("count");
+            System.out.print(num);
+        }
+    }
+
+    private void printNumFollowing(Connection conn, int userID) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("select count(f.user) from " +
+                "p320_09.follow as f where f.following = " + userID);
+        ResultSet rs;
+        try{
+            rs = stmt.executeQuery();
+        }catch(Exception e){
+            System.out.println("Could not find following");
+            return;
+        }
+        while(rs.next()){
+            int num = rs.getInt("count");
+            System.out.print(num);
+        }
+    }
+
+    private void printNumCollections(Connection conn, int userID) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("select count(c.collectionid) from " +
+                "p320_09.collection as c where c.userid = " + userID);
+        ResultSet rs;
+        try{
+            rs = stmt.executeQuery();
+        }catch(Exception e){
+            System.out.println("Could not find collections");
+            e.printStackTrace();
+            return;
+        }
+        while(rs.next()){
+            int num = rs.getInt("count");
+            System.out.print(num);
+        }
+    }
+
+    private void printTopArtists(Connection conn, int userID) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("select a.artist_name, count(a.artistid)" +
+                "from p320_09.user_songs as us, p320_09.song as s, p320_09.artist as a " +
+                "where us.songid = s.songid and s.artistid = a.artistid and us.userid = " + userID +
+                " group by a.artist_name, a.artistid order by a.artistid desc limit 10");
+        ResultSet rs;
+        try{
+            rs = stmt.executeQuery();
+        }catch(Exception e){
+            System.out.println("Could not print top artists");
+            e.printStackTrace();
+            return;
+        }
+        while(rs.next()){
+            String artist_name = rs.getString("artist_name");
+            int num = rs.getInt("count");
+            System.out.println("\t" + artist_name + ": " + num);
         }
     }
 }
