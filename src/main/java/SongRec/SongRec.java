@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SongRec {
@@ -24,7 +25,7 @@ public class SongRec {
 
             switch (input) {
                 case "-5m":
-                    topSongsForMonth(conn, reader);
+                    topSongsForMonth(conn);
                     break;
                 case "-5f":
                     topSongsForFriends(conn, reader);
@@ -39,18 +40,22 @@ public class SongRec {
         }
     }
 
-    public static void topSongsForMonth(Connection conn, BufferedReader reader) throws SQLException {
+    public static void topSongsForMonth(Connection conn) throws SQLException {
         PreparedStatement stmt;
-        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
-                "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
-                "WHERE s.artistID = ar.artistID " +
-                "AND g.genreid = s.genreid " +
-                "AND ar.artistID = a.artistID " +
-                "AND at.songID = s.songID " +
-                "AND at.albumID = a.albumID " +
-                "AND us. " +
-                "GROUP BY a.title, s.song_name, ar.artist_name, s.length, g.genre_name, s.release_date "+
-                "ORDER BY user_count ASC");
+
+        stmt = conn.prepareStatement("SELECT s.song_name, COUNT(s.songid) AS count " +
+                "FROM p320_09.user_songs AS us, p320_09.song AS s " +
+                "WHERE us.songid = s.songid " +
+                "GROUP BY s.song_name, s.songid " +
+                "ORDER BY s.songid DESC " +
+                "LIMIT 10");
+
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            String snm = rs.getString("song_name");
+            String count = rs.getString("count");
+            System.out.println("\t(" + snm + ") played " + count + " times");
+        }
     }
 
     public static void topSongsForFriends(Connection conn, BufferedReader reader) {
