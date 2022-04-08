@@ -97,7 +97,7 @@ public class HomePage {
                 case "-r":
                     Recc.Recc();
                 case "-re":
-                    SongRec.entry(conn, reader);
+                    SongRec.entry(conn, reader, userID);
                     break;
                 case "-q":
                     System.out.println("Logging out");
