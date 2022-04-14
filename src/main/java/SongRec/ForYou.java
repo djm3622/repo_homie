@@ -18,17 +18,25 @@ import java.sql.Connection;
  *
  * 5 songs from play history + 5 songs from similar users
  * play history:
- * query - get user play history
+ * query - get user's play history
  *      for top 5 of these,get the song's genre
- *          query- for each genre a song != original
+ *          query- for each genre get a song that != original
  *          add to list
  *
  * similar users -
  * query - get user play history (same query as above dont need to replicate)
  *     for top 5 of these, get the song,
- *         query - a user who also plays this song who is not you
+ *         query - given a song, a user who also plays this song who is not you
  *                 query - form that user a song that is in their library (plays/collections?) that you dont have
  *         add to list
+ *
+ *  queries:
+ *  1. given a userID return that user's play history of songs (songID's)
+ *  2. given a song, return a song that is of the same genre but != original
+ *
+ *  3. given a song and userID, return a userID who also has this song in their play history
+ *  4. given a 2 userID's (a and b), return a song that is in b's library(their collections I presume), that a
+ *          doesn't have in their play history
  */
 public class ForYou {
 

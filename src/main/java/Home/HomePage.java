@@ -1,6 +1,6 @@
 package Home;
 
-import Collection.Collection;
+import Collection.Collections;
 import Helper.HelperFucntions;
 import Listening.Played;
 import SongRec.ForYou;
@@ -71,13 +71,13 @@ public class HomePage {
 
             switch (input) {
                 case "-c":
-                    Collection.createCollection(reader, conn, this.userID);
+                    Collections.createCollection(reader, conn, this.userID);
                     break;
                 case "-v":
-                    Collection.viewCollections(conn, this.userID, false);
+                    Collections.viewCollections(conn, this.userID, false);
                     break;
                 case "-e":
-                    Collection.chooseCollection(reader, conn, this.userID);
+                    Collections.chooseCollection(reader, conn, this.userID);
                     break;
                 case "-s":
                     SongSearch.entry(conn);

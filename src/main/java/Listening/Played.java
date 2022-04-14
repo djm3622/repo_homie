@@ -134,12 +134,12 @@ public class Played {
                         stmt.executeQuery();
                     } catch (PSQLException ignored) {}
                 }
-                System.out.println("\tCollection played.");
+                System.out.println("\tCollections played.");
             } else {
-                System.out.println("\tCollection is empty.");
+                System.out.println("\tCollections is empty.");
             }
         } else {
-            System.out.println("\tCollection does not exist.");
+            System.out.println("\tCollections does not exist.");
         }
     }
 }

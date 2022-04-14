@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
-public class Collection {
+public class Collections {
     public static void createCollection(BufferedReader reader, Connection conn, int userID) throws SQLException, IOException {
-        HelperFucntions.barCaps("Name Your New Collection Below");
+        HelperFucntions.barCaps("Name Your New Collections Below");
         System.out.print("> ");
         String input = reader.readLine();
 
@@ -27,7 +27,7 @@ public class Collection {
         try{
             stmt.executeQuery();
         }catch(PSQLException e){
-            System.out.println("Collection Created.");
+            System.out.println("Collections Created.");
         }
     }
     /**
@@ -89,7 +89,7 @@ public class Collection {
                 }
             }
 
-            System.out.println("\tCollection does not exist.");
+            System.out.println("\tCollections does not exist.");
         }
     }
 
@@ -98,7 +98,7 @@ public class Collection {
         label:
         while (true) {
             System.out.println("");
-            System.out.println("Collection Commands as Follows:");
+            System.out.println("Collections Commands as Follows:");
             System.out.println("\t-as : to add song");
             System.out.println("\t-ds : to delete song");
             System.out.println("\t-aa : to add album");
@@ -304,7 +304,7 @@ public class Collection {
             String title = rs.getString("title");
             String artist_name = rs.getString("artist_name");
             System.out.println("\tID: " + albumID + ", " + title + " by " + artist_name);
-          }
+        }
         else{
             System.out.println("\tCould not find album.");
             return;
@@ -433,7 +433,7 @@ public class Collection {
                 System.out.println("\t(" + snm + ") by (" + anm + ")");
             }
         } else {
-            System.out.println("\tCollection is empty.");
+            System.out.println("\tCollections is empty.");
         }
     }
 }
