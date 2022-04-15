@@ -62,21 +62,21 @@ public class ForYou {
         String [] Usrsongs = new String[5];
         //get play history of current user
         PreparedStatement stmt1 = conn.prepareStatement("SELECT DISTINCT us.songID " +
-                "FROM p320_09.user_songs AS us" +
+                "FROM p320_09.user_songs AS us " +
                 "WHERE us.userID = " + currID);
 
         ResultSet rs1 = stmt1.executeQuery();
         while (rs1.next()) {
-            temp.add(rs1.getString("song_id"));
+            temp.add(rs1.getString("songid"));
         }
         for(int i =0; i < Usrsongs.length; i++){ //first 5 songs in play curr history
             Usrsongs[i] = temp.get(i);
+            System.out.println(Usrsongs[i]);
         }
         temp.clear();
         ArrayList<String> gotSongs = new ArrayList<>();
         for(int i = 1; i <= Usrsongs.length; i ++) {
             PreparedStatement stmt2 = conn.prepareStatement("SELECT s.song_name FROM p320_09.song AS s" +
-                    "FROM p320_09.user_songs AS us" +
                     "WHERE s.genreID IN (SELECT DISTINCT s.genreID FROM p320_09.song AS s" +
                     "WHERE s.songID= " + Usrsongs[i] + ") AND s.songID != " + Usrsongs[i]);
             ResultSet rs2 = stmt1.executeQuery();
@@ -103,7 +103,7 @@ public class ForYou {
 
         ResultSet rs1 = stmt1.executeQuery();
         while (rs1.next()) {
-            temp.add(rs1.getString("song_id"));
+            temp.add(rs1.getString("songid"));
         }
         for(int i =0; i < Usrsongs.length; i++){ //first 5 songs in play curr history
             Usrsongs[i] = temp.get(i);
