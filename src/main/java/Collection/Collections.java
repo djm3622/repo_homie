@@ -9,6 +9,15 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 
 public class Collections {
+
+    /**
+     * creates a new collection for the current user
+     * @param reader buffer to get input from user
+     * @param conn connection established upon running
+     * @param userID id of logged in user
+     * @throws SQLException
+     * @throws IOException
+     */
     public static void createCollection(BufferedReader reader, Connection conn, int userID) throws SQLException, IOException {
         HelperFucntions.barCaps("Name Your New Collections Below");
         System.out.print("> ");
@@ -32,9 +41,9 @@ public class Collections {
     }
     /**
      * currently doesnt show collections without any songs
-     * @param conn
-     * @param userID
-     * @param flag
+     * @param conn connection established upon running
+     * @param userID id of logged in user
+     * @param flag print just names or collection stats
      * @throws SQLException
      */
     public static void viewCollections(Connection conn, int userID, boolean flag) throws SQLException {
@@ -48,6 +57,7 @@ public class Collections {
                 System.out.println("\t: " + collectionName);
             }
         }
+        // false to print collections and collection stats
         else{
             PreparedStatement stmt = conn.prepareStatement("SELECT c.name, COUNT(ct.track_number) AS total_songs, " +
                     "SUM(s.length) AS total_length FROM p320_09.collection_track AS ct, p320_09.collection AS c, " +
@@ -64,6 +74,14 @@ public class Collections {
         }
     }
 
+    /**
+     * helper function for user to choose a collection
+     * @param reader buffer for user input
+     * @param conn connection established upon
+     * @param userID id of logged in user
+     * @throws SQLException
+     * @throws IOException
+     */
     public static void chooseCollection(BufferedReader reader, Connection conn, int userID) throws SQLException,
             IOException {
         // call viewCollection with special flag for only names
@@ -93,6 +111,14 @@ public class Collections {
         }
     }
 
+    /**
+     * directory function to choose what to do with a collection
+     * @param reader buffer for user input
+     * @param conn connection established upon running
+     * @param collectionID id of collection to edit
+     * @throws IOException
+     * @throws SQLException
+     */
     public static void editCollection(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
         String input;
         label:
@@ -142,6 +168,14 @@ public class Collections {
         }
     }
 
+    /**
+     * adds a song to a collection
+     * @param reader buffer to get user input
+     * @param conn connection established upon running
+     * @param collectionID id of collection to edit
+     * @throws IOException
+     * @throws SQLException
+     */
     public static void addSong(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
         System.out.println(" ");
         HelperFucntions.barCaps("song name you want to add");
@@ -183,6 +217,14 @@ public class Collections {
         }
     }
 
+    /**
+     * deletes a song from a collection
+     * @param reader buffer to get user input
+     * @param conn connection established upon running
+     * @param collectionID id of collection to edit
+     * @throws SQLException
+     * @throws IOException
+     */
     public static void deleteSong(BufferedReader reader, Connection conn, int collectionID) throws SQLException, IOException {
         System.out.println(" ");
         HelperFucntions.barCaps("song name you want to delete");
@@ -229,6 +271,14 @@ public class Collections {
         }
     }
 
+    /**
+     * adds all songs on an album to collection
+     * @param reader buffer to get user input
+     * @param conn connection established upon running
+     * @param collectionID id of collection to edit
+     * @throws IOException
+     * @throws SQLException
+     */
     public static void addAlbum(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
         System.out.println(" ");
         HelperFucntions.barCaps("album name you want to add");
@@ -279,6 +329,14 @@ public class Collections {
 
     }
 
+    /**
+     * deletes all the songs on an album from collection
+     * @param reader buffer to get user input
+     * @param conn connection established upon running
+     * @param collectionID id of collection to edit
+     * @throws IOException
+     * @throws SQLException
+     */
     public static void deleteAlbum(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
         System.out.println(" ");
         HelperFucntions.barCaps("name of album you want to delete");
@@ -333,6 +391,14 @@ public class Collections {
         System.out.println("\tSuccessfully deleted album.");
     }
 
+    /**
+     * change a collection's name
+     * @param reader buffer to get user input
+     * @param conn connection established upon running
+     * @param collectionID id of collection to edit
+     * @throws IOException
+     * @throws SQLException
+     */
     public static void changeCollectionName(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
         HelperFucntions.barCaps("change name below");
         System.out.print("> ");
@@ -347,6 +413,14 @@ public class Collections {
         }
     }
 
+    /**
+     * deletes an entire collection for a user
+     * @param reader buffer to get user input
+     * @param conn connection established upon running
+     * @param collectionID id of collection to edit
+     * @throws IOException
+     * @throws SQLException
+     */
     public static void deleteCollection(BufferedReader reader, Connection conn, int collectionID) throws IOException, SQLException {
         HelperFucntions.barCaps("are you sure you want to delete this collection? (y/n)");
         String input = reader.readLine();
@@ -370,6 +444,12 @@ public class Collections {
         }
     }
 
+    /**
+     * helper function to edit track numbers whlie editing a collection
+     * @param conn connection established upon running
+     * @param collectionID id of collection to edit
+     * @throws SQLException
+     */
     public static void updateTrackNumber(Connection conn, int collectionID) throws SQLException {
         // update track numbers
         PreparedStatement stmt = conn.prepareStatement("SELECT songid " +
@@ -399,6 +479,13 @@ public class Collections {
         }
     }
 
+    /**
+     * finds the track number of the last song in the collection then adds 1
+     * @param conn connection established upon running
+     * @param collectionID id of collection to edit
+     * @return new track number
+     * @throws SQLException
+     */
     public static int getTrackNumber(Connection conn, int collectionID) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM p320_09.collection_track where collectionid = " +
                 collectionID + " ORDER BY track_number DESC LIMIT 1");
@@ -411,6 +498,12 @@ public class Collections {
         return track_number;
     }
 
+    /**
+     * displays song name and artist name of all songs in a collection
+     * @param conn connection established upon running
+     * @param collectionID id of collection to view
+     * @throws SQLException
+     */
     public static void displayCollectionContents(Connection conn, int collectionID) throws SQLException {
         PreparedStatement stmt;
         ResultSet rs;
