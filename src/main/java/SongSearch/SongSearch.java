@@ -56,7 +56,7 @@ public class SongSearch {
         System.out.print("Song Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.time_play) AS user_count " +
                 "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                 "WHERE s.artistID = ar.artistID " +
                 "AND g.genreid = s.genreid " +
@@ -80,7 +80,7 @@ public class SongSearch {
                 break;
             }
 
-            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.time_play) AS user_count " +
                     "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                     "WHERE s.artistID = ar.artistID " +
                     "AND g.genreid = s.genreid " +
@@ -102,7 +102,7 @@ public class SongSearch {
         System.out.print("Artist Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.time_play) AS user_count " +
                 "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                 "WHERE s.artistID = ar.artistID " +
                 "AND g.genreid = s.genreid " +
@@ -126,7 +126,7 @@ public class SongSearch {
                 break;
             }
 
-            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.time_play) AS user_count " +
                     "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                     "WHERE s.artistID = ar.artistID " +
                     "AND g.genreid = s.genreid " +
@@ -150,7 +150,7 @@ public class SongSearch {
         System.out.print("Album Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.time_play) AS user_count " +
                 "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                 "WHERE s.artistID = ar.artistID " +
                 "AND g.genreid = s.genreid " +
@@ -174,7 +174,7 @@ public class SongSearch {
                 break;
             }
 
-            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.time_play) AS user_count " +
                     "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                     "WHERE s.artistID = ar.artistID " +
                     "AND g.genreid = s.genreid " +
@@ -196,7 +196,7 @@ public class SongSearch {
         System.out.print("Genre Name: ");
         String input = reader.readLine();
 
-        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+        stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.time_play) AS user_count " +
                 "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                 "WHERE s.artistID = ar.artistID " +
                 "AND g.genreid = s.genreid " +
@@ -220,7 +220,7 @@ public class SongSearch {
                 break;
             }
 
-            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.user_play) AS user_count " +
+            stmt = conn.prepareStatement("SELECT s.song_name, ar.artist_name, s.length, a.title, COUNT(us.time_play) AS user_count " +
                     "FROM p320_09.song AS s, p320_09.artist AS ar, p320_09.genre AS g , p320_09.album AS a, p320_09.album_track AS at, p320_09.user_songs AS us " +
                     "WHERE s.artistID = ar.artistID " +
                     "AND g.genreid = s.genreid " +

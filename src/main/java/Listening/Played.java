@@ -72,7 +72,7 @@ public class Played {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssX");
             Date date = new Date(System.currentTimeMillis());
 
-            stmt = conn.prepareStatement("INSERT INTO p320_09.user_songs (userid, songid, user_play) " +
+            stmt = conn.prepareStatement("INSERT INTO p320_09.user_songs (userid, songid, time_play) " +
                     "VALUES (" + userid + ", " + in + ", '" + formatter.format(date) + "')");
 
             try {
@@ -121,14 +121,14 @@ public class Played {
 
             if (rs.next()) {
                 id = rs.getString("songid");
-                stmt = conn.prepareStatement("INSERT INTO p320_09.user_songs (userid, songid, user_play) " +
+                stmt = conn.prepareStatement("INSERT INTO p320_09.user_songs (userid, songid, time_play) " +
                         "VALUES (" + userid + ", " + id + ", '" + formatter.format(date) + "')");
                 try {
                     stmt.executeQuery();
                 } catch (PSQLException ignored) {}
                 while (rs.next()) {
                     id = rs.getString("songid");
-                    stmt = conn.prepareStatement("INSERT INTO p320_09.user_songs (userid, songid, user_play) " +
+                    stmt = conn.prepareStatement("INSERT INTO p320_09.user_songs (userid, songid, time_play) " +
                             "VALUES (" + userid + ", " + id + ", '" + formatter.format(date) + "')");
                     try {
                         stmt.executeQuery();

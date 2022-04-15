@@ -43,7 +43,7 @@ import java.util.Random;
 public class ForYou {
 
     public static void ForYou(Connection conn, BufferedReader reader, int userID) throws SQLException {
-        System.out.println("Personalized Recommendations- For You\n");
+        System.out.println("Personalized Recommendations - For You\n");
         System.out.println("Based on your play history we recommend:");
         String [] songs;
         songs = PlayHistResults(conn, userID);
