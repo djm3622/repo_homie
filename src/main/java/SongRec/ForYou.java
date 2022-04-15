@@ -75,13 +75,14 @@ public class ForYou {
         }
         temp.clear();
         ArrayList<String> gotSongs = new ArrayList<>();
-        for(int i = 1; i <= Usrsongs.length; i ++) {
-            PreparedStatement stmt2 = conn.prepareStatement("SELECT s.song_name FROM p320_09.song AS s" +
-                    "WHERE s.genreID IN (SELECT DISTINCT s.genreID FROM p320_09.song AS s" +
+        for(int i = 0; i < Usrsongs.length; i ++) {
+            PreparedStatement stmt2 = conn.prepareStatement("SELECT s.song_name FROM p320_09.song AS s " +
+                    "WHERE s.genreID IN (SELECT DISTINCT s.genreID FROM p320_09.song AS s " +
                     "WHERE s.songID= " + Usrsongs[i] + ") AND s.songID != " + Usrsongs[i]);
-            ResultSet rs2 = stmt1.executeQuery();
+            ResultSet rs2 = stmt2.executeQuery();
             while (rs2.next()) {
-                temp.add(rs2.getString("song_name"));
+                String t = rs2.getString("song_name");
+                temp.add(t);//(rs2.getString("song_name"));
             }
         }
         Collections.shuffle(temp);   //randomize all songs in temp
@@ -98,7 +99,7 @@ public class ForYou {
         String [] Usrsongs = new String[5];
         //get play history of current user
         PreparedStatement stmt1 = conn.prepareStatement("SELECT DISTINCT us.songID " +
-                "FROM p320_09.user_songs AS us" +
+                "FROM p320_09.user_songs AS us " +
                 "WHERE us.userID = " + currID);
 
         ResultSet rs1 = stmt1.executeQuery();
@@ -112,24 +113,24 @@ public class ForYou {
         ArrayList<String> gotSongs = new ArrayList<>();
 
         //gives list of all followers who listen to same songs
-        for(int i = 1; i <= Usrsongs.length; i ++) {
-            PreparedStatement stmt2 = conn.prepareStatement(" SELECT f.following" +
-                    "FROM p320_09.follow AS f, p320_09.user_songs AS us" +
+        for(int i = 0; i < Usrsongs.length; i ++) {
+            PreparedStatement stmt2 = conn.prepareStatement(" SELECT f.following " +
+                    "FROM p320_09.follow AS f, p320_09.user_songs AS us " +
                     "WHERE us.songID = " + Usrsongs[i] + "AND f.user = " + currID +
-                    "AND f.user = us.userID LIMIT 1");
-            ResultSet rs2 = stmt1.executeQuery();
+                    " AND f.user = us.userID LIMIT 1");
+            ResultSet rs2 = stmt2.executeQuery();
             while (rs2.next()) {
                 temp.add(rs2.getString("following"));
             }
         }
         //gives all the songs similar usrs listen to not belonging in curr's plays
-        for(int i = 1; i <= Usrsongs.length; i ++) {
-            PreparedStatement stmt2 = conn.prepareStatement(" SELECT DISTINCT us.song_name" +
+        for(int i = 0; i < Usrsongs.length; i ++) {
+            PreparedStatement stmt2 = conn.prepareStatement(" SELECT DISTINCT us.song_name " +
                     "FROM p320_09.user_songs AS us WHERE us.userID = " + temp.get(i) +
-                    "EXCEPT SELECT DISTINCT us.songID FROM p320_09.user_songs AS us" +
+                    " EXCEPT SELECT DISTINCT us.songID FROM p320_09.user_songs AS us " +
                     "WHERE us.userID = " + currID);
             temp.clear();
-            ResultSet rs2 = stmt1.executeQuery();
+            ResultSet rs2 = stmt2.executeQuery();
             while (rs2.next()) {
                 temp.add(rs2.getString("song_name"));
             }
