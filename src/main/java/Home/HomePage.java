@@ -1,6 +1,6 @@
 package Home;
 
-import Collection.Collection;
+import Collection.Collections;
 import Helper.HelperFucntions;
 import Listening.Played;
 import SongRec.ForYou;
@@ -17,6 +17,12 @@ public class HomePage {
     private String username;
     private String first_name;
 
+    /**
+     * constructor to create a homepage for a user
+     * @param conn connection established upon running
+     * @param username username of current user
+     * @throws SQLException
+     */
     public HomePage(Connection conn, String username) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("select userid, username, first_name from p320_09.user");
         ResultSet set = stmt.executeQuery();
@@ -32,6 +38,14 @@ public class HomePage {
             }
         }
     }
+
+    /**
+     * directory function for home page, displays user stats automatically
+     * @param reader buffer to get user input
+     * @param conn connection established upon running
+     * @throws IOException
+     * @throws SQLException
+     */
     public void homeHandle(BufferedReader reader, Connection conn) throws IOException, SQLException {
         System.out.println();
         HelperFucntions.barCaps("Welcome " + first_name + "!");
@@ -71,13 +85,13 @@ public class HomePage {
 
             switch (input) {
                 case "-c":
-                    Collection.createCollection(reader, conn, this.userID);
+                    Collections.createCollection(reader, conn, this.userID);
                     break;
                 case "-v":
-                    Collection.viewCollections(conn, this.userID, false);
+                    Collections.viewCollections(conn, this.userID, false);
                     break;
                 case "-e":
-                    Collection.chooseCollection(reader, conn, this.userID);
+                    Collections.chooseCollection(reader, conn, this.userID);
                     break;
                 case "-s":
                     SongSearch.entry(conn);
@@ -106,6 +120,12 @@ public class HomePage {
         }
     }
 
+    /**
+     * displays number of followers a user has
+     * @param conn connection established upon running
+     * @param userID id of user to find followers for
+     * @throws SQLException
+     */
     private void printNumFollowers(Connection conn, int userID) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("select count(f.following) from " +
                 "p320_09.follow as f where f.user = " + userID);
@@ -122,6 +142,12 @@ public class HomePage {
         }
     }
 
+    /**
+     * displays the number of following for a user
+     * @param conn connection established upon running
+     * @param userID id of user to count following
+     * @throws SQLException
+     */
     private void printNumFollowing(Connection conn, int userID) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("select count(f.user) from " +
                 "p320_09.follow as f where f.following = " + userID);
@@ -138,6 +164,12 @@ public class HomePage {
         }
     }
 
+    /**
+     * displays the number of collections a user has
+     * @param conn connection established upon running
+     * @param userID id of user to count collection for
+     * @throws SQLException
+     */
     private void printNumCollections(Connection conn, int userID) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("select count(c.collectionid) from " +
                 "p320_09.collection as c where c.userid = " + userID);
@@ -155,6 +187,12 @@ public class HomePage {
         }
     }
 
+    /**
+     * displays a user's top 10 artists
+     * @param conn conenction established upon running
+     * @param userID id of user to display collections for
+     * @throws SQLException
+     */
     private void printTopArtists(Connection conn, int userID) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("select a.artist_name, count(a.artistid)" +
                 "from p320_09.user_songs as us, p320_09.song as s, p320_09.artist as a " +

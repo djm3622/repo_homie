@@ -10,6 +10,13 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 
 public class Login {
+    /**
+     * function to handle user login
+     * @param conn connection established upon running
+     * @param reader buffer to get user input
+     * @throws IOException
+     * @throws SQLException
+     */
     public static void processLogin(Connection conn, BufferedReader reader) throws IOException, SQLException {
         PreparedStatement stmt;
         ResultSet rs;
