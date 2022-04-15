@@ -71,7 +71,11 @@ public class DataSource {
         BufferedReader reader = new BufferedReader( new InputStreamReader(System.in) );
         String input;
 
-        // DataFromSCV.initIn(conn);
+        //DataFromSCV.initIn(conn);         // first part of first poster q
+        //DataFromSCV.initInCont(conn);     // second part of first poster q
+        //DataFromSCV.initTwo(conn);        // second poster q
+        //DataFromSCV.initThree(conn);      // third poster q
+
 
         label:
         while (true) {
