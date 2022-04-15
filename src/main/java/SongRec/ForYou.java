@@ -1,8 +1,8 @@
 package SongRec;
 
 import java.io.BufferedReader;
-import java.sql.Array;
-import java.sql.Connection;
+import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -32,6 +32,15 @@ import java.sql.Connection;
  *
  *  queries:
  *  1. given a userID return that user's play history of songs (songID's)
+ *      select song_name from p320_09.song
+ * where song.songid = (SELECT DISTINCT us.songID
+ *  FROM p320_09.user_songs AS us
+ *  WHERE us.userID = 6);
+ *
+ *      SELECT DISTINCT us.songID
+ * FROM p320_09.user_songs AS us
+ * WHERE us.userID = [userID];
+ *
  *  2. given a song, return a song that is of the same genre but != original
  *
  *  3. given a song and userID, return a userID who also has this song in their play history
@@ -40,11 +49,11 @@ import java.sql.Connection;
  */
 public class ForYou {
 
-    public static void ForYou(Connection conn, BufferedReader reader, int userID){
+    public static void ForYou(Connection conn, BufferedReader reader, int userID) throws SQLException {
         System.out.println("Personalized Recommendations- For You");
         System.out.println("Based on your play history we recommend:");
         String [] songs;
-        songs = PlayHistResults();
+        songs = PlayHistResults(conn, userID);
         for(int i = 0; i < 4; i++)
             System.out.println(songs[i]);
 
@@ -54,8 +63,24 @@ public class ForYou {
             System.out.println(songs[i]);
         }
 
-    public static String[] PlayHistResults(){
+    public static String[] PlayHistResults(Connection conn, int currID) throws SQLException {
         String [] songs = new String[5];
+        //get play history of current user
+        //PreparedStatement stmt1 = conn.prepareStatement("SELECT DISTINCT us.songID " +
+          //      "FROM p320_09.user_songs AS us WHERE us.userID = " + currID);
+        PreparedStatement stmt1 = conn.prepareStatement("SELECT song_name FROM p320_09.song " +
+                "WHERE song.songid = (" + "SELECT DISTINCT us.songID " +
+                "FROM p320_09.user_songs AS us WHERE us.userID = " + currID);
+
+        ResultSet rs1 = stmt1.executeQuery();
+        while (rs1.next()) {
+            for(int i=0; i < songs.length; i++){
+                songs[i] = rs1.getString("song_name");
+            }
+        }
+
+
+
         return songs;
     }
 
