@@ -77,8 +77,8 @@ public class HomePage {
             System.out.println("\t-fu : to follow a user");
             System.out.println("\t-uf : to unfollow a user");
             System.out.println("\t-re : Top Charts - general recc");
-            System.out.println("\t-q  : to log out");
             System.out.println("\t-r  : For You Recommendations ");
+            System.out.println("\t-q  : to log out");
             System.out.print("> ");
 
             input = reader.readLine();
@@ -110,6 +110,7 @@ public class HomePage {
                     break;
                 case "-r":
                     ForYou.ForYou(conn, reader, this.userID);
+                    break;
                 case "-re":
                     SongRec.entry(conn, reader, this.userID);
                     break;

@@ -43,17 +43,17 @@ import java.util.Random;
 public class ForYou {
 
     public static void ForYou(Connection conn, BufferedReader reader, int userID) throws SQLException {
-        System.out.println("Personalized Recommendations- For You");
+        System.out.println("Personalized Recommendations- For You\n");
         System.out.println("Based on your play history we recommend:");
         String [] songs;
         songs = PlayHistResults(conn, userID);
         for(int i = 0; i < 5; i++)
-            System.out.println(songs[i]);
+            System.out.println("\t" + songs[i]);
 
         System.out.println("Based on what similar users are listening to we recommend:");
         songs = SimilarUsrResults(conn, userID);
         for(int i = 0; i < 5; i++)
-            System.out.println(songs[i]);
+            System.out.println("\t" + songs[i]);
         }
 
 
@@ -71,7 +71,7 @@ public class ForYou {
         }
         for(int i =0; i < Usrsongs.length; i++){ //first 5 songs in play curr history
             Usrsongs[i] = temp.get(i);
-            System.out.println(Usrsongs[i]);
+            //System.out.println(Usrsongs[i]);
         }
         temp.clear();
         ArrayList<String> gotSongs = new ArrayList<>();
@@ -95,8 +95,10 @@ public class ForYou {
     }
 
     public static String[] SimilarUsrResults(Connection conn, int currID) throws SQLException{
-    ArrayList<String> temp = new ArrayList<>();
+        ArrayList<String> temp = new ArrayList<>();
+        ArrayList<Integer> tempInt = new ArrayList<>();
         String [] Usrsongs = new String[5];
+        Integer [] userSongsInt = new Integer[5];
         //get play history of current user
         PreparedStatement stmt1 = conn.prepareStatement("SELECT DISTINCT us.songID " +
                 "FROM p320_09.user_songs AS us " +
@@ -125,20 +127,30 @@ public class ForYou {
         }
         //gives all the songs similar usrs listen to not belonging in curr's plays
         for(int i = 0; i < Usrsongs.length; i ++) {
-            PreparedStatement stmt2 = conn.prepareStatement(" SELECT DISTINCT us.song_name " +
+            PreparedStatement stmt2 = conn.prepareStatement("SELECT DISTINCT us.songID " +
                     "FROM p320_09.user_songs AS us WHERE us.userID = " + temp.get(i) +
                     " EXCEPT SELECT DISTINCT us.songID FROM p320_09.user_songs AS us " +
                     "WHERE us.userID = " + currID);
-            temp.clear();
+            tempInt.clear();
             ResultSet rs2 = stmt2.executeQuery();
             while (rs2.next()) {
-                temp.add(rs2.getString("song_name"));
+                tempInt.add(rs2.getInt("songid"));
             }
         }
-        Collections.shuffle(temp);   //randomize all songs in temp
-        for(int i =0; i < Usrsongs.length; i++)
+        Collections.shuffle(tempInt);   //randomize all songs in temp
+        for(int i =0; i < userSongsInt.length; i++)
         {
-            Usrsongs[i] = temp.get(i);
+            userSongsInt[i] = tempInt.get(i);
+        }
+
+        // finds the song_name for each of the sondIDs
+        for(int i = 0; i < userSongsInt.length; i++) {
+            PreparedStatement stmt3 = conn.prepareStatement("select song_name from p320_09.song " +
+                    "where songid = " + userSongsInt[i]);
+            ResultSet rs3 = stmt3.executeQuery();
+            while(rs3.next()){
+                Usrsongs[i] = rs3.getString("song_name");
+            }
         }
 
         return Usrsongs;
