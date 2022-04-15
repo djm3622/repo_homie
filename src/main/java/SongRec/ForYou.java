@@ -46,12 +46,12 @@ public class ForYou {
             System.out.println(songs[i]);
         }
 
-    public static String[] PlayHistResults(){
+    public static String[] PlayHistResults() {
         String [] songs = new String[5];
         return songs;
     }
 
-    public static String[] SimilarUsrResults(){
+    public static String[] SimilarUsrResults() {
         String [] songs = new String[5];
         return songs;
     }
