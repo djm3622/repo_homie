@@ -45,15 +45,17 @@ public class ForYou {
     public static void ForYou(Connection conn, BufferedReader reader, int userID) throws SQLException {
         System.out.println("Personalized Recommendations - For You\n");
         System.out.println("Based on your play history we recommend:");
-        String [] songs;
-        songs = PlayHistResults(conn, userID);
+        String [] songs1;
+        String [] songs2;
+        songs1 = PlayHistResults(conn, userID);
         for(int i = 0; i < 5; i++)
-            System.out.println("\t" + songs[i]);
+            System.out.println("\t" + songs1[i]);
 
         System.out.println("Based on what similar users are listening to we recommend:");
-        songs = SimilarUsrResults(conn, userID);
+        System.out.println(SimilarUsrResults(conn, userID));
+        songs2 = SimilarUsrResults(conn, userID);
         for(int i = 0; i < 5; i++)
-            System.out.println("\t" + songs[i]);
+            System.out.println("\t" + songs2[i]);
         }
 
 
@@ -112,7 +114,6 @@ public class ForYou {
             Usrsongs[i] = temp.get(i);
         }
         temp.clear();
-        ArrayList<String> gotSongs = new ArrayList<>();
 
         //gives list of all followers who listen to same songs
         for(int i = 0; i < Usrsongs.length; i ++) {
@@ -125,6 +126,8 @@ public class ForYou {
                 temp.add(rs2.getString("following"));
             }
         }
+        ArrayList<String> gotSongs = new ArrayList<>();
+
         //gives all the songs similar usrs listen to not belonging in curr's plays
         for(int i = 0; i < Usrsongs.length; i ++) {
             PreparedStatement stmt2 = conn.prepareStatement("SELECT DISTINCT us.songID " +
@@ -134,19 +137,19 @@ public class ForYou {
             tempInt.clear();
             ResultSet rs2 = stmt2.executeQuery();
             while (rs2.next()) {
-                tempInt.add(rs2.getInt("songid"));
+                gotSongs.add(rs2.getString("songid"));
             }
         }
-        Collections.shuffle(tempInt);   //randomize all songs in temp
+        Collections.shuffle(gotSongs);   //randomize all songs in temp
         for(int i =0; i < userSongsInt.length; i++)
         {
-            userSongsInt[i] = tempInt.get(i);
+            Usrsongs[i] = gotSongs.get(i);
         }
 
         // finds the song_name for each of the sondIDs
         for(int i = 0; i < userSongsInt.length; i++) {
             PreparedStatement stmt3 = conn.prepareStatement("select song_name from p320_09.song " +
-                    "where songid = " + userSongsInt[i]);
+                    "where songid = " + Usrsongs[i]);
             ResultSet rs3 = stmt3.executeQuery();
             while(rs3.next()){
                 Usrsongs[i] = rs3.getString("song_name");
