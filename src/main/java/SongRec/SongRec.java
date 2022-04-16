@@ -18,7 +18,7 @@ public class SongRec {
             System.out.println("\t-5m  : top 50 for the month (rolling)");
             System.out.println("\t-5f  : top 50 for friends");
             System.out.println("\t-5g  : top 5 genres");
-            System.out.println("\t-q  : to log out");
+            System.out.println("\t-q  : to return to home");
             System.out.print("> ");
 
             input = reader.readLine();
@@ -46,23 +46,25 @@ public class SongRec {
         stmt = conn.prepareStatement("SELECT s.song_name, COUNT(us.songid) AS count " +
                 "FROM p320_09.user_songs AS us, p320_09.song AS s " +
                 "WHERE us.songid = s.songid " +
-                "AND extract(month from us.user_play) >= extract(month from current_date - 1) "+
+                "AND extract(month from us.time_play) >= extract(month from current_date - 1) "+
                 "GROUP BY s.song_name, s.songid " +
                 "ORDER BY count DESC " +
                 "LIMIT 50");
 
         ResultSet rs = stmt.executeQuery();
+        int counter = 1;
         while (rs.next()) {
             String snm = rs.getString("song_name");
             String count = rs.getString("count");
-            System.out.println("\t(" + snm + ") played " + count + " times");
+            System.out.println("\t" + counter + ") \"" + snm + "\" was played " + count + " times");
+            counter++;
         }
     }
 
     public static void topSongsForFriends(Connection conn, int userid) throws SQLException {
         PreparedStatement stmt;
 
-        stmt = conn.prepareStatement("SELECT s.song_name, COUNT(us.user_play) AS us_count " +
+        stmt = conn.prepareStatement("SELECT s.song_name, COUNT(us.time_play) AS us_count " +
                 "FROM p320_09.song AS s, p320_09.user_songs AS us, p320_09.follow AS f " +
                 "WHERE s.songID = us.songID " +
                 "AND f.user = " + userid + " " +
@@ -72,10 +74,12 @@ public class SongRec {
                 "LIMIT 50;");
 
         ResultSet rs = stmt.executeQuery();
+        int counter = 1;
         while (rs.next()) {
             String snm = rs.getString("song_name");
             String count = rs.getString("us_count");
-            System.out.println("\t(" + snm + ") played " + count + " times");
+            System.out.println("\t" + counter + ") \"" + snm + "\" was played " + count + " times");
+            counter++;
         }
     }
 
@@ -86,16 +90,18 @@ public class SongRec {
                 "FROM p320_09.user_songs AS us, p320_09.song AS s, p320_09.genre AS g " +
                 "WHERE us.songID = s.songID "+
                 "AND s.genreID = g.genreID "+
-                "AND extract(month from us.user_play) >= extract(month from current_date - 1) "+
+                "AND extract(month from us.time_play) >= extract(month from current_date - 1) "+
                 "GROUP BY g.genre_name, g.genreID "+
                 "ORDER BY g_count DESC "+
                 "LIMIT 5");
 
         ResultSet rs = stmt.executeQuery();
+        int counter = 1;
         while (rs.next()) {
             String snm = rs.getString("genre_name");
             String count = rs.getString("g_count");
-            System.out.println("\t(" + snm + ") played " + count + " times");
+            System.out.println("\t" + counter  + ") "+ snm + " was played " + count + " times");
+            counter++;
         }
     }
 

@@ -1,3 +1,4 @@
+import CSVstuff.DataFromSCV;
 import Helper.HelperFucntions;
 import Home.HomePage;
 import LoginReg.Login;
@@ -69,6 +70,12 @@ public class DataSource {
     public static void processInit(Connection conn) throws IOException, SQLException {
         BufferedReader reader = new BufferedReader( new InputStreamReader(System.in) );
         String input;
+
+        //DataFromSCV.initIn(conn);         // first part of first poster q
+        //DataFromSCV.initInCont(conn);     // second part of first poster q
+        //DataFromSCV.initTwo(conn);        // second poster q
+        //DataFromSCV.initThree(conn);      // third poster q
+
 
         label:
         while (true) {
