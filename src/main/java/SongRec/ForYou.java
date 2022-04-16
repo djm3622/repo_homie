@@ -81,6 +81,7 @@ public class ForYou {
                     "WHERE s.songID= " + Usrsongs[i] + ") AND s.songID != " + Usrsongs[i]);
             ResultSet rs2 = stmt1.executeQuery();
             while (rs2.next()) {
+                int temps = rs2.getRow();
                 temp.add(rs2.getString("song_name"));
             }
         }
