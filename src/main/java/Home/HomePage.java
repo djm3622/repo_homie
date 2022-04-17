@@ -198,7 +198,7 @@ public class HomePage {
         PreparedStatement stmt = conn.prepareStatement("select a.artist_name, count(a.artistid)" +
                 "from p320_09.user_songs as us, p320_09.song as s, p320_09.artist as a " +
                 "where us.songid = s.songid and s.artistid = a.artistid and us.userid = " + userID +
-                " group by a.artist_name, a.artistid order by a.artistid desc limit 10");
+                " group by a.artist_name, a.artistid order by count(a.artistid) desc limit 10");
         ResultSet rs;
         try{
             rs = stmt.executeQuery();
