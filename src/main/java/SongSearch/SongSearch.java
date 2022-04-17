@@ -63,6 +63,7 @@ public class SongSearch {
                 "AND ar.artistID = a.artistID " +
                 "AND at.songID = s.songID " +
                 "AND at.albumID = a.albumID " +
+                "AND us.songID = s.songID " +
                 "AND s.song_name LIKE '%" + input + "%' " +
                 "GROUP BY a.title, s.song_name, ar.artist_name, s.length, g.genre_name, s.release_date "+
                 "ORDER BY s.song_name ASC, ar.artist_name ASC");

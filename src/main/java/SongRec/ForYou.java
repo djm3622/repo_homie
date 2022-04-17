@@ -52,7 +52,7 @@ public class ForYou {
             System.out.println("\t" + songs1[i]);
 
         System.out.println("Based on what similar users are listening to we recommend:");
-        System.out.println(SimilarUsrResults(conn, userID));
+//        System.out.println(SimilarUsrResults(conn, userID));
         songs2 = SimilarUsrResults(conn, userID);
         for(int i = 0; i < 5; i++)
             System.out.println("\t" + songs2[i]);
