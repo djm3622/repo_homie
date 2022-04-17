@@ -131,7 +131,6 @@ public class Collections {
             System.out.println("\t-da : to delete album");
             System.out.println("\t-m  : to modify name");
             System.out.println("\t-d  : to delete collection");
-            System.out.println("\t-c  : to change collection");
             System.out.println("\t-v  : to display collection contents");
             System.out.println("\t-q  : to return to home");
             System.out.print("> ");
@@ -156,9 +155,6 @@ public class Collections {
                     break;
                 case "-d":
                     deleteCollection(reader, conn, collectionID);
-                    break;
-                case "-c":
-                    // delete?
                     break;
                 case "-v":
                     displayCollectionContents(conn, collectionID);
